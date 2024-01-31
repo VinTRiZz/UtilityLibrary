@@ -1,5 +1,5 @@
-#ifndef POINT_H
-#define POINT_H
+#ifndef UL_POINT_H
+#define UL_POINT_H
 
 // For factorial function and Qt includes
 #include "main_utils.h"
@@ -86,4 +86,4 @@ QRectF convertRectFromStringQ(const std::string &rectStr, const char rectDelim =
 
 }
 
-#endif // POINT_H
+#endif // UL_POINT_H
