@@ -8,13 +8,10 @@
 #include "connectionworker.h"
 
 #include <functional>
+namespace Utility {
 
-<<<<<<< HEAD
-namespace Network
-=======
-namespace Utility::Network
->>>>>>> master
-{
+namespace Network {
+
 class ThreadManager final : public QObject
 {
     Q_OBJECT
@@ -85,6 +82,9 @@ class ThreadManager final : public QObject
 
         void rejectConnection(qintptr handler);
 };
+
+}
+
 }
 
 #endif // UL_CONNECTION_MANAGER_H

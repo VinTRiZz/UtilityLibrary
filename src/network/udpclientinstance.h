@@ -7,8 +7,8 @@
 
 #include "exchangepacket.h"
 
-namespace Utility::Network
-{
+namespace Utility {
+namespace Network {
 
 class UdpClientInstanceQ : public QObject
 {
@@ -28,6 +28,8 @@ private:
     struct Impl;
     std::unique_ptr<Impl> d;
 };
+
+}
 
 }
 

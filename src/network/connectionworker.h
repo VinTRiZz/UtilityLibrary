@@ -6,13 +6,10 @@
 
 #include "packetprocessor.h"
 
-class DatabaseLoader;
+namespace Utility
+{
 
-<<<<<<< HEAD
 namespace Network
-=======
-namespace Utility::Network
->>>>>>> master
 {
     class ConnectionWorker : public QObject
     {
@@ -60,4 +57,5 @@ namespace Utility::Network
     };
 }
 
+}
 #endif // UL_CONNECTIONWORKER_H

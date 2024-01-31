@@ -1,10 +1,6 @@
 #include "packetprocessor.h"
 
-<<<<<<< HEAD
-Network::PacketProcessor::PacketProcessor(
-=======
 Utility::Network::PacketProcessor::PacketProcessor(
->>>>>>> master
         std::function<void()> & initer,
         std::function<void()> & deiniter,
         std::function<void (const Exchange::Packet &, Exchange::Packet &)>& infoProcessor,
@@ -25,21 +21,13 @@ Utility::Network::PacketProcessor::PacketProcessor(
         m_initer();
 }
 
-<<<<<<< HEAD
-Network::PacketProcessor::~PacketProcessor()
-=======
 Utility::Network::PacketProcessor::~PacketProcessor()
->>>>>>> master
 {
     if (m_deiniter)
         m_deiniter();
 }
 
-<<<<<<< HEAD
-Exchange::Packet Network::PacketProcessor::process(const Exchange::Packet& p)
-=======
 Exchange::Packet Utility::Network::PacketProcessor::process(const Exchange::Packet& p)
->>>>>>> master
 {
     Exchange::Packet response;
 

@@ -10,12 +10,9 @@
 #include <QObject>
 #endif // QT_CORE_LIB
 
-<<<<<<< HEAD
-namespace Network
-=======
-namespace Utility::Network
->>>>>>> master
-{
+namespace Utility {
+
+namespace Network {
 
 #ifdef QT_NETWORK_LIB
 class TcpCLientInstanceQ : public QObject
@@ -113,4 +110,5 @@ private slots:
 
 }
 
+}
 #endif // UL_TCPCLIENTINSTANCE_H

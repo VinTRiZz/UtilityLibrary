@@ -8,8 +8,8 @@
 
 #warning "Взять проект из дома, этот ужасный с точки зрения реализации"
 
-namespace Utility::Network
-{
+namespace Utility {
+namespace Network {
 
 class UdpServerInstanceQ : public QObject
 {
@@ -32,6 +32,8 @@ private:
     struct Impl;
     std::unique_ptr<Impl> d;
 };
+
+}
 
 }
 

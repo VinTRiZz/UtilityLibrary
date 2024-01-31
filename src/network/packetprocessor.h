@@ -7,11 +7,8 @@
 
 #include "exchangepacket.h"
 
-<<<<<<< HEAD
+namespace Utility {
 namespace Network {
-=======
-namespace Utility::Network {
->>>>>>> master
 
 class PacketProcessor : public QObject
 {
@@ -60,6 +57,8 @@ private:
      */
     bool action(const std::string& inputType, const std::string& inputData);
 };
+
+}
 
 }
 

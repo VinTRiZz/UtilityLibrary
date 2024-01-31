@@ -1,15 +1,6 @@
 #ifndef UL_TCPSERVERINSTANCE_H
 #define UL_TCPSERVERINSTANCE_H
 
-<<<<<<< HEAD
-#ifdef QT_CORE_LIB
-#ifndef QT_NETWORK_LIB
-#error "Qt network library not connected. Try [ QT += network ] adding into .pro file"
-#endif // QT_NETWORK_LIB
-#endif // QT_CORE_LIB
-
-=======
->>>>>>> master
 #include <memory>
 
 #ifdef QT_NETWORK_LIB
@@ -19,11 +10,10 @@
 
 #include "exchangepacket.h"
 
-<<<<<<< HEAD
+namespace Utility
+{
+
 namespace Network
-=======
-namespace Utility::Network
->>>>>>> master
 {
 
 // Qt-only server
@@ -77,6 +67,8 @@ public:
     TcpServerInstance();
     ~TcpServerInstance();   
 };
+
+}
 
 }
 

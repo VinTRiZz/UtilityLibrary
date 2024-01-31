@@ -1,10 +1,6 @@
 ﻿#include "connectionworker.h"
 
-<<<<<<< HEAD
-Network::ConnectionWorker::ConnectionWorker(std::function<void()> &initer,
-=======
 Utility::Network::ConnectionWorker::ConnectionWorker(std::function<void()> &initer,
->>>>>>> master
                                             std::function<void()> &deiniter,
                                             std::function<void(const Exchange::Packet &, Exchange::Packet &)>& infoProcessor,
                                             std::function<void(const Exchange::Packet &, Exchange::Packet &)>& actionProcessor,
@@ -17,11 +13,7 @@ Utility::Network::ConnectionWorker::ConnectionWorker(std::function<void()> &init
 
 }
 
-<<<<<<< HEAD
-Network::ConnectionWorker::~ConnectionWorker()
-=======
 Utility::Network::ConnectionWorker::~ConnectionWorker()
->>>>>>> master
 {
     disconnect(m_pCon.get(),&QTcpSocket::readyRead, this,&ConnectionWorker::onMessage);
     disconnect(m_pCon.get(),&QTcpSocket::disconnected, this,&ConnectionWorker::onDisconnect);
@@ -30,11 +22,7 @@ Utility::Network::ConnectionWorker::~ConnectionWorker()
         m_pCon->disconnectFromHost();
 }
 
-<<<<<<< HEAD
-void Network::ConnectionWorker::setConnection(int descriptor, unsigned long workerId)
-=======
 void Utility::Network::ConnectionWorker::setConnection(int descriptor, unsigned long workerId)
->>>>>>> master
 {
     if (QTcpSocket::ConnectedState == m_pCon->state())
     {
@@ -53,21 +41,13 @@ void Utility::Network::ConnectionWorker::setConnection(int descriptor, unsigned 
 }
 
 
-<<<<<<< HEAD
-unsigned long Network::ConnectionWorker::getId() const
-=======
 unsigned long Utility::Network::ConnectionWorker::getId() const
->>>>>>> master
 {
     return m_workerId;
 }
 
 
-<<<<<<< HEAD
-void Network::ConnectionWorker::onDisconnect()
-=======
 void Utility::Network::ConnectionWorker::onDisconnect()
->>>>>>> master
 {
     qDebug() << "Client disconnected: [\033[33m" << m_workerId << "\033[0m]";
     m_pCon->deleteLater();
@@ -75,11 +55,7 @@ void Utility::Network::ConnectionWorker::onDisconnect()
 }
 
 
-<<<<<<< HEAD
-void Network::ConnectionWorker::onMessage()
-=======
 void Utility::Network::ConnectionWorker::onMessage()
->>>>>>> master
 {
     if (!m_pCon->isOpen())
     {

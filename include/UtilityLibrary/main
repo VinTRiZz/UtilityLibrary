@@ -1,5 +1,2 @@
-<<<<<<< HEAD
-#include "../../src/main_utils.h"
-=======
 #include "../../src/main/main_utils.h"
->>>>>>> master
+

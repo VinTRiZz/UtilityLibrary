@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-#include "../../../src/network/tcpclientinstance.h"
-=======
 #ifdef QT_CORE_LIB
 #ifdef QT_NETWORK_LIB
 #include "../../../src/network/tcpclientinstance.h"
@@ -8,4 +5,3 @@
 #error "Qt network library not connected. Try [ QT += network ] adding into .pro file"
 #endif // QT_NETWORK_LIB
 #endif // QT_CORE_LIB
->>>>>>> master

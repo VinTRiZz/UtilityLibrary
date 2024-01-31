@@ -1,5 +1,1 @@
-<<<<<<< HEAD
-#include "../../src/point.h"
-=======
 #include "../../src/main/point.h"
->>>>>>> master
