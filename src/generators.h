@@ -4,8 +4,10 @@
 #include <string>
 #include <vector>
 
+#ifdef QT_CORE_LIB
 #include <QString>
 #include <QVector>
+#endif // QT_CORE_LIB
 
 namespace Utility
 {
@@ -45,15 +47,21 @@ namespace Utility
             };
         }
 
-        QString generateText(int countMin, int countMax, const std::vector<std::string> & initWords);
+        // Std-used
+        std::string generateText(int countMin, int countMax, const std::vector<std::string> & initWords);
+        std::string generateString(int sizeMin, int sizeMax, bool hasSpaces);
+        std::string generateAboba(int countMin, int countMax);
+        std::string generatePath(bool withSpaces = false);
+        std::vector<std::string> generateDepends(std::vector<std::string> & dependTargets, const std::string & target, int targetCount, const int randomInterval);
 
-        QString generateString(int sizeMin, int sizeMax, bool hasSpaces);
-
-        QString generateAboba(int countMin, int countMax);
-
-        QString generatePath(bool withSpaces = false);
-
-        QVector<QString> generateDepends(QVector<QString> & dependTargets, const QString & target, int targetCount, const int randomInterval);
+        // Qt-used
+#ifdef QT_CORE_LIB
+        QString generateTextQ(int countMin, int countMax, const std::vector<std::string> & initWords);
+        QString generateStringQ(int sizeMin, int sizeMax, bool hasSpaces);
+        QString generateAbobaQ(int countMin, int countMax);
+        QString generatePathQ(bool withSpaces = false);
+        QVector<QString> generateDependsQ(QVector<QString> & dependTargets, const QString & target, int targetCount, const int randomInterval);
+#endif // QT_CORE_LIB
     }
 }
 #endif // GENERATORS_H

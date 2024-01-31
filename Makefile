@@ -50,14 +50,18 @@ OBJECTS_DIR   = BUILD/
 
 ####### Files
 
-SOURCES       = src/basicutils.cpp \
-		src/extendedtypes.cpp \
+SOURCES       = src/extendedtypes.cpp \
 		src/generators.cpp \
-		src/serverinstance.cpp 
-OBJECTS       = BUILD/basicutils.o \
-		BUILD/extendedtypes.o \
+		src/main_utils.cpp \
+		src/point.cpp \
+		src/tcpclientinstance.cpp \
+		src/tcpserverinstance.cpp 
+OBJECTS       = BUILD/extendedtypes.o \
 		BUILD/generators.o \
-		BUILD/serverinstance.o
+		BUILD/main_utils.o \
+		BUILD/point.o \
+		BUILD/tcpclientinstance.o \
+		BUILD/tcpserverinstance.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/linux.conf \
@@ -140,13 +144,17 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exceptions.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/yacc.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
-		UtilityLibrary.pro src/basicutils.h \
-		src/extendedtypes.h \
+		UtilityLibrary.pro src/extendedtypes.h \
 		src/generators.h \
-		src/serverinstance.h src/basicutils.cpp \
-		src/extendedtypes.cpp \
+		src/main_utils.h \
+		src/point.h \
+		src/tcpclientinstance.h \
+		src/tcpserverinstance.h src/extendedtypes.cpp \
 		src/generators.cpp \
-		src/serverinstance.cpp
+		src/main_utils.cpp \
+		src/point.cpp \
+		src/tcpclientinstance.cpp \
+		src/tcpserverinstance.cpp
 QMAKE_TARGET  = UtilityLibrary
 DESTDIR       = BIN/
 TARGET        = libUtilityLibrary.so.1.0.0
@@ -372,8 +380,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents src/basicutils.h src/extendedtypes.h src/generators.h src/serverinstance.h $(DISTDIR)/
-	$(COPY_FILE) --parents src/basicutils.cpp src/extendedtypes.cpp src/generators.cpp src/serverinstance.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents src/extendedtypes.h src/generators.h src/main_utils.h src/point.h src/tcpclientinstance.h src/tcpserverinstance.h $(DISTDIR)/
+	$(COPY_FILE) --parents src/extendedtypes.cpp src/generators.cpp src/main_utils.cpp src/point.cpp src/tcpclientinstance.cpp src/tcpserverinstance.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -422,17 +430,24 @@ compiler_clean: compiler_moc_predefs_clean
 
 ####### Compile
 
-BUILD/basicutils.o: src/basicutils.cpp src/basicutils.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/basicutils.o src/basicutils.cpp
-
 BUILD/extendedtypes.o: src/extendedtypes.cpp src/extendedtypes.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/extendedtypes.o src/extendedtypes.cpp
 
 BUILD/generators.o: src/generators.cpp src/generators.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/generators.o src/generators.cpp
 
-BUILD/serverinstance.o: src/serverinstance.cpp src/serverinstance.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/serverinstance.o src/serverinstance.cpp
+BUILD/main_utils.o: src/main_utils.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/main_utils.o src/main_utils.cpp
+
+BUILD/point.o: src/point.cpp src/point.h \
+		src/main_utils.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/point.o src/point.cpp
+
+BUILD/tcpclientinstance.o: src/tcpclientinstance.cpp src/tcpclientinstance.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/tcpclientinstance.o src/tcpclientinstance.cpp
+
+BUILD/tcpserverinstance.o: src/tcpserverinstance.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/tcpserverinstance.o src/tcpserverinstance.cpp
 
 ####### Install
 
