@@ -38,7 +38,7 @@ DISTNAME      = UtilityLibrary1.0.0
 DISTDIR = /home/lazarev_as/Projects/Qt/UtilityLibrary/BUILD/UtilityLibrary1.0.0
 LINK          = g++
 LFLAGS        = -shared -Wl,-soname,libUtilityLibrary.so.1
-LIBS          = $(SUBLIBS) -lQt5Gui -lQt5Network -lQt5Core -lGL -lpthread 
+LIBS          = $(SUBLIBS) -lcrypto -lQt5Gui -lQt5Network -lQt5Core -lGL -lpthread 
 AR            = ar cqs
 RANLIB        = 
 SED           = sed
@@ -55,13 +55,14 @@ SOURCES       = src/extendedtypes.cpp \
 		src/main_utils.cpp \
 		src/point.cpp \
 		src/tcpclientinstance.cpp \
-		src/tcpserverinstance.cpp 
+		src/tcpserverinstance.cpp BUILD/moc_tcpclientinstance.cpp
 OBJECTS       = BUILD/extendedtypes.o \
 		BUILD/generators.o \
 		BUILD/main_utils.o \
 		BUILD/point.o \
 		BUILD/tcpclientinstance.o \
-		BUILD/tcpserverinstance.o
+		BUILD/tcpserverinstance.o \
+		BUILD/moc_tcpclientinstance.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/linux.conf \
@@ -144,7 +145,8 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exceptions.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/yacc.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
-		UtilityLibrary.pro src/extendedtypes.h \
+		UtilityLibrary.pro src/exchangepacket.h \
+		src/extendedtypes.h \
 		src/generators.h \
 		src/main_utils.h \
 		src/point.h \
@@ -380,7 +382,7 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents src/extendedtypes.h src/generators.h src/main_utils.h src/point.h src/tcpclientinstance.h src/tcpserverinstance.h $(DISTDIR)/
+	$(COPY_FILE) --parents src/exchangepacket.h src/extendedtypes.h src/generators.h src/main_utils.h src/point.h src/tcpclientinstance.h src/tcpserverinstance.h $(DISTDIR)/
 	$(COPY_FILE) --parents src/extendedtypes.cpp src/generators.cpp src/main_utils.cpp src/point.cpp src/tcpclientinstance.cpp src/tcpserverinstance.cpp $(DISTDIR)/
 
 
@@ -414,8 +416,15 @@ compiler_moc_predefs_clean:
 BUILD/moc_predefs.h: /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 	g++ -pipe -g -std=gnu++1y -Wall -W -dM -E -o BUILD/moc_predefs.h /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all:
+compiler_moc_header_make_all: BUILD/moc_tcpclientinstance.cpp
 compiler_moc_header_clean:
+	-$(DEL_FILE) BUILD/moc_tcpclientinstance.cpp
+BUILD/moc_tcpclientinstance.cpp: src/exchangepacket.h \
+		src/tcpclientinstance.h \
+		BUILD/moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/lazarev_as/Projects/Qt/UtilityLibrary/BUILD/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/lazarev_as/Projects/Qt/UtilityLibrary -I/home/lazarev_as/Projects/Qt/UtilityLibrary/src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/6 -I/usr/include/x86_64-linux-gnu/c++/6 -I/usr/include/c++/6/backward -I/usr/lib/gcc/x86_64-linux-gnu/6/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/6/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include src/tcpclientinstance.h -o BUILD/moc_tcpclientinstance.cpp
+
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
 compiler_moc_source_make_all:
@@ -426,7 +435,7 @@ compiler_yacc_impl_make_all:
 compiler_yacc_impl_clean:
 compiler_lex_make_all:
 compiler_lex_clean:
-compiler_clean: compiler_moc_predefs_clean 
+compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean 
 
 ####### Compile
 
@@ -436,18 +445,22 @@ BUILD/extendedtypes.o: src/extendedtypes.cpp src/extendedtypes.h
 BUILD/generators.o: src/generators.cpp src/generators.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/generators.o src/generators.cpp
 
-BUILD/main_utils.o: src/main_utils.cpp 
+BUILD/main_utils.o: src/main_utils.cpp src/main_utils.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/main_utils.o src/main_utils.cpp
 
 BUILD/point.o: src/point.cpp src/point.h \
 		src/main_utils.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/point.o src/point.cpp
 
-BUILD/tcpclientinstance.o: src/tcpclientinstance.cpp src/tcpclientinstance.h
+BUILD/tcpclientinstance.o: src/tcpclientinstance.cpp src/tcpclientinstance.h \
+		src/exchangepacket.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/tcpclientinstance.o src/tcpclientinstance.cpp
 
-BUILD/tcpserverinstance.o: src/tcpserverinstance.cpp 
+BUILD/tcpserverinstance.o: src/tcpserverinstance.cpp src/tcpserverinstance.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/tcpserverinstance.o src/tcpserverinstance.cpp
+
+BUILD/moc_tcpclientinstance.o: BUILD/moc_tcpclientinstance.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/moc_tcpclientinstance.o BUILD/moc_tcpclientinstance.cpp
 
 ####### Install
 
