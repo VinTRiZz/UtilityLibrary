@@ -1,2 +1,4 @@
+#ifdef QT_WIDGETS_LIB
 #include "../../../src/qt_widgets/figures.h"
 #include "../../../src/qt_widgets/drawwidget.h"
+#endif // QT_WIDGETS_LIB

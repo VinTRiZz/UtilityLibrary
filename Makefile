@@ -50,10 +50,10 @@ OBJECTS_DIR   = BUILD/
 
 ####### Files
 
-SOURCES       = src/extendedtypes.cpp \
-		src/generators.cpp \
-		src/main_utils.cpp \
-		src/point.cpp \
+SOURCES       = src/main/extendedtypes.cpp \
+		src/main/generators.cpp \
+		src/main/main_utils.cpp \
+		src/main/point.cpp \
 		src/network/connectionworker.cpp \
 		src/network/packetprocessor.cpp \
 		src/network/tcpclientinstance.cpp \
@@ -186,10 +186,10 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exceptions.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/yacc.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
-		UtilityLibrary.pro src/extendedtypes.h \
-		src/generators.h \
-		src/main_utils.h \
-		src/point.h \
+		UtilityLibrary.pro src/main/extendedtypes.h \
+		src/main/generators.h \
+		src/main/main_utils.h \
+		src/main/point.h \
 		src/network/connectionworker.h \
 		src/network/exchangepacket.h \
 		src/network/packetprocessor.h \
@@ -205,10 +205,10 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		src/qt_widgets/drawwidget.h \
 		src/qt_widgets/figures.h \
 		src/qt_widgets/treeitem.h \
-		src/qt_widgets/treeitemmodel.h src/extendedtypes.cpp \
-		src/generators.cpp \
-		src/main_utils.cpp \
-		src/point.cpp \
+		src/qt_widgets/treeitemmodel.h src/main/extendedtypes.cpp \
+		src/main/generators.cpp \
+		src/main/main_utils.cpp \
+		src/main/point.cpp \
 		src/network/connectionworker.cpp \
 		src/network/packetprocessor.cpp \
 		src/network/tcpclientinstance.cpp \
@@ -453,8 +453,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents src/extendedtypes.h src/generators.h src/main_utils.h src/point.h src/network/connectionworker.h src/network/exchangepacket.h src/network/packetprocessor.h src/network/tcpclientinstance.h src/network/tcpserverinstance.h src/network/threadmanager.h src/network/udpclientinstance.h src/network/udpserverinstance.h src/process/configworker.h src/process/etc.h src/process/processobserver.h src/process/worker.h src/qt_widgets/drawwidget.h src/qt_widgets/figures.h src/qt_widgets/treeitem.h src/qt_widgets/treeitemmodel.h $(DISTDIR)/
-	$(COPY_FILE) --parents src/extendedtypes.cpp src/generators.cpp src/main_utils.cpp src/point.cpp src/network/connectionworker.cpp src/network/packetprocessor.cpp src/network/tcpclientinstance.cpp src/network/tcpserverinstance.cpp src/network/threadmanager.cpp src/network/udpclientinstance.cpp src/network/udpserverinstance.cpp src/process/configworker.cpp src/process/etc.cpp src/process/processobserver.cpp src/process/worker.cpp src/qt_widgets/drawwidget.cpp src/qt_widgets/figures.cpp src/qt_widgets/treeitem.cpp src/qt_widgets/treeitemmodel.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents src/main/extendedtypes.h src/main/generators.h src/main/main_utils.h src/main/point.h src/network/connectionworker.h src/network/exchangepacket.h src/network/packetprocessor.h src/network/tcpclientinstance.h src/network/tcpserverinstance.h src/network/threadmanager.h src/network/udpclientinstance.h src/network/udpserverinstance.h src/process/configworker.h src/process/etc.h src/process/processobserver.h src/process/worker.h src/qt_widgets/drawwidget.h src/qt_widgets/figures.h src/qt_widgets/treeitem.h src/qt_widgets/treeitemmodel.h $(DISTDIR)/
+	$(COPY_FILE) --parents src/main/extendedtypes.cpp src/main/generators.cpp src/main/main_utils.cpp src/main/point.cpp src/network/connectionworker.cpp src/network/packetprocessor.cpp src/network/tcpclientinstance.cpp src/network/tcpserverinstance.cpp src/network/threadmanager.cpp src/network/udpclientinstance.cpp src/network/udpserverinstance.cpp src/process/configworker.cpp src/process/etc.cpp src/process/processobserver.cpp src/process/worker.cpp src/qt_widgets/drawwidget.cpp src/qt_widgets/figures.cpp src/qt_widgets/treeitem.cpp src/qt_widgets/treeitemmodel.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -536,8 +536,6 @@ BUILD/moc_worker.cpp: src/process/configworker.h \
 	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/lazarev_as/Projects/Qt/UtilityLibrary/BUILD/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/lazarev_as/Projects/Qt/UtilityLibrary -I/home/lazarev_as/Projects/Qt/UtilityLibrary/src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/6 -I/usr/include/x86_64-linux-gnu/c++/6 -I/usr/include/c++/6/backward -I/usr/lib/gcc/x86_64-linux-gnu/6/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/6/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include src/process/worker.h -o BUILD/moc_worker.cpp
 
 BUILD/moc_drawwidget.cpp: src/qt_widgets/figures.h \
-		src/point.h \
-		src/main_utils.h \
 		src/qt_widgets/drawwidget.h \
 		BUILD/moc_predefs.h \
 		/usr/lib/qt5/bin/moc
@@ -559,18 +557,18 @@ compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean
 
 ####### Compile
 
-BUILD/extendedtypes.o: src/extendedtypes.cpp src/extendedtypes.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/extendedtypes.o src/extendedtypes.cpp
+BUILD/extendedtypes.o: src/main/extendedtypes.cpp src/main/extendedtypes.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/extendedtypes.o src/main/extendedtypes.cpp
 
-BUILD/generators.o: src/generators.cpp src/generators.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/generators.o src/generators.cpp
+BUILD/generators.o: src/main/generators.cpp src/main/generators.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/generators.o src/main/generators.cpp
 
-BUILD/main_utils.o: src/main_utils.cpp src/main_utils.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/main_utils.o src/main_utils.cpp
+BUILD/main_utils.o: src/main/main_utils.cpp src/main/main_utils.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/main_utils.o src/main/main_utils.cpp
 
-BUILD/point.o: src/point.cpp src/point.h \
-		src/main_utils.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/point.o src/point.cpp
+BUILD/point.o: src/main/point.cpp src/main/point.h \
+		src/main/main_utils.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/point.o src/main/point.cpp
 
 BUILD/connectionworker.o: src/network/connectionworker.cpp src/network/connectionworker.h \
 		src/network/packetprocessor.h \
@@ -622,14 +620,10 @@ BUILD/worker.o: src/process/worker.cpp src/process/worker.h \
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/worker.o src/process/worker.cpp
 
 BUILD/drawwidget.o: src/qt_widgets/drawwidget.cpp src/qt_widgets/drawwidget.h \
-		src/qt_widgets/figures.h \
-		src/point.h \
-		src/main_utils.h
+		src/qt_widgets/figures.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/drawwidget.o src/qt_widgets/drawwidget.cpp
 
-BUILD/figures.o: src/qt_widgets/figures.cpp src/qt_widgets/figures.h \
-		src/point.h \
-		src/main_utils.h
+BUILD/figures.o: src/qt_widgets/figures.cpp src/qt_widgets/figures.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/figures.o src/qt_widgets/figures.cpp
 
 BUILD/treeitem.o: src/qt_widgets/treeitem.cpp src/qt_widgets/treeitem.h

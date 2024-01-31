@@ -1,7 +1,7 @@
 #ifndef FIGURES_H
 #define FIGURES_H
 
-#include "point.h"
+#include "../main/point.h"
 
 namespace Utility
 {
@@ -14,7 +14,7 @@ public:
 
     virtual void addPoint(const Point p) { m_points.push_back(p); }
     virtual const QVector<Point> & points() { if (!m_points.size()) setup(); return m_points; }
-    auto pointCount() const { return m_points.size(); }
+    int pointCount() const { return m_points.size(); }
     void resetPoints() { m_points.clear(); }
 
     // In figures all angles used in degrees

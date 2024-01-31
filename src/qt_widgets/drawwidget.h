@@ -5,7 +5,7 @@
 #include <memory>
 
 #include "figures.h"
-#include "point.h"
+#include "../main/point.h"
 
 namespace Utility
 {
