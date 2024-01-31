@@ -58,7 +58,9 @@ SOURCES       = src/extendedtypes.cpp \
 		src/network/packetprocessor.cpp \
 		src/network/tcpclientinstance.cpp \
 		src/network/tcpserverinstance.cpp \
-		src/network/threadmanager.cpp BUILD/moc_connectionworker.cpp \
+		src/network/threadmanager.cpp \
+		src/process/etc.cpp \
+		src/process/watcher.cpp BUILD/moc_connectionworker.cpp \
 		BUILD/moc_packetprocessor.cpp \
 		BUILD/moc_tcpclientinstance.cpp \
 		BUILD/moc_threadmanager.cpp
@@ -71,6 +73,8 @@ OBJECTS       = BUILD/extendedtypes.o \
 		BUILD/tcpclientinstance.o \
 		BUILD/tcpserverinstance.o \
 		BUILD/threadmanager.o \
+		BUILD/etc.o \
+		BUILD/watcher.o \
 		BUILD/moc_connectionworker.o \
 		BUILD/moc_packetprocessor.o \
 		BUILD/moc_tcpclientinstance.o \
@@ -166,7 +170,9 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		src/network/packetprocessor.h \
 		src/network/tcpclientinstance.h \
 		src/network/tcpserverinstance.h \
-		src/network/threadmanager.h src/extendedtypes.cpp \
+		src/network/threadmanager.h \
+		src/process/etc.h \
+		src/process/watcher.h src/extendedtypes.cpp \
 		src/generators.cpp \
 		src/main_utils.cpp \
 		src/point.cpp \
@@ -174,7 +180,9 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		src/network/packetprocessor.cpp \
 		src/network/tcpclientinstance.cpp \
 		src/network/tcpserverinstance.cpp \
-		src/network/threadmanager.cpp
+		src/network/threadmanager.cpp \
+		src/process/etc.cpp \
+		src/process/watcher.cpp
 QMAKE_TARGET  = UtilityLibrary
 DESTDIR       = BIN/
 TARGET        = libUtilityLibrary.so.1.0.0
@@ -400,8 +408,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents src/extendedtypes.h src/generators.h src/main_utils.h src/point.h src/network/connectionworker.h src/network/exchangepacket.h src/network/packetprocessor.h src/network/tcpclientinstance.h src/network/tcpserverinstance.h src/network/threadmanager.h $(DISTDIR)/
-	$(COPY_FILE) --parents src/extendedtypes.cpp src/generators.cpp src/main_utils.cpp src/point.cpp src/network/connectionworker.cpp src/network/packetprocessor.cpp src/network/tcpclientinstance.cpp src/network/tcpserverinstance.cpp src/network/threadmanager.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents src/extendedtypes.h src/generators.h src/main_utils.h src/point.h src/network/connectionworker.h src/network/exchangepacket.h src/network/packetprocessor.h src/network/tcpclientinstance.h src/network/tcpserverinstance.h src/network/threadmanager.h src/process/etc.h src/process/watcher.h $(DISTDIR)/
+	$(COPY_FILE) --parents src/extendedtypes.cpp src/generators.cpp src/main_utils.cpp src/point.cpp src/network/connectionworker.cpp src/network/packetprocessor.cpp src/network/tcpclientinstance.cpp src/network/tcpserverinstance.cpp src/network/threadmanager.cpp src/process/etc.cpp src/process/watcher.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -504,7 +512,11 @@ BUILD/tcpclientinstance.o: src/network/tcpclientinstance.cpp src/network/tcpclie
 		src/network/exchangepacket.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/tcpclientinstance.o src/network/tcpclientinstance.cpp
 
-BUILD/tcpserverinstance.o: src/network/tcpserverinstance.cpp src/network/tcpserverinstance.h
+BUILD/tcpserverinstance.o: src/network/tcpserverinstance.cpp src/network/tcpserverinstance.h \
+		src/network/exchangepacket.h \
+		src/network/threadmanager.h \
+		src/network/connectionworker.h \
+		src/network/packetprocessor.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/tcpserverinstance.o src/network/tcpserverinstance.cpp
 
 BUILD/threadmanager.o: src/network/threadmanager.cpp src/network/threadmanager.h \
@@ -512,6 +524,12 @@ BUILD/threadmanager.o: src/network/threadmanager.cpp src/network/threadmanager.h
 		src/network/packetprocessor.h \
 		src/network/exchangepacket.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/threadmanager.o src/network/threadmanager.cpp
+
+BUILD/etc.o: src/process/etc.cpp src/process/etc.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/etc.o src/process/etc.cpp
+
+BUILD/watcher.o: src/process/watcher.cpp src/process/watcher.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/watcher.o src/process/watcher.cpp
 
 BUILD/moc_connectionworker.o: BUILD/moc_connectionworker.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/moc_connectionworker.o BUILD/moc_connectionworker.cpp

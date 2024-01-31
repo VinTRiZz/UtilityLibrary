@@ -4,6 +4,13 @@
 // For factorial function and Qt includes
 #include "main_utils.h"
 
+#ifdef QT_CORE_LIB
+#include <QPoint>
+#include <QVector>
+#include <QFile>
+#include <QRectF>
+#endif // QT_CORE_LIB
+
 namespace Utility
 {
 
