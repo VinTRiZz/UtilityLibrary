@@ -1,2 +1,4 @@
 BIN/
 BUILD/
+Makefile
+.qmake.stash

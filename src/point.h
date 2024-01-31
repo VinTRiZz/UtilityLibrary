@@ -1,48 +1,12 @@
-#ifndef BASICUTILS_H
-#define BASICUTILS_H
+#ifndef POINT_H
+#define POINT_H
 
-// STD includes
-#include <string>
-#include <fstream>
-
-// Qt includes
-#ifdef QT_CORE_LIB
-#include <QString>
-#include <QPoint>
-#include <QVector>
-#include <QFile>
-#include <QRectF>
-#endif // QT_CORE_LIB
-
-// Defines struct Point and removes depending functions if undefined
-#define BU_POINT_FUNCTIONALITY
-
-// Point struct generation functions, like createEllypsePoints(), used for drawing
-#define BU_POINT_GENERATION_FUNCTIONS
-
-// Conversions to std::string like Point(x==19.35, y==91,33) ---> "16,35_91,33"
-// and back to Point struct
-#define BU_POINT_TO_STRING_CONVERTION
-
-// Process invoking and gathering it's output by one function
-#define BU_PROCESS_INVOKING
-
-// Save and load functions with and without Qt file
-#define BU_FILE_READ_WRITE
-
+// For factorial function and Qt includes
+#include "main_utils.h"
 
 namespace Utility
 {
 
-// Etc functions
-uint factorial(long n);
-
-
-
-
-
-
-#ifdef BU_POINT_FUNCTIONALITY
 // Class to work as points in code, partly equal QPointF
 struct Point
 {
@@ -86,7 +50,6 @@ void rotatePoint(Point & p, const Point &rotateCenter, const double rotateAngleI
 
 
 // Point generator functions
-#ifdef BU_POINT_GENERATION_FUNCTIONS
 
 // Qt-based
 #ifdef QT_CORE_LIB
@@ -107,15 +70,12 @@ std::vector<Point> createBezierPoints(const std::vector<Point> & basisPoints, co
 QVector<Point> createBezierPointsQ(const QVector<Point> & basisPoints, const double accuracy);
 #endif // QT_CORE_LIB
 
-#endif // BU_FUNCTION_POINT_GENERATION
 
 
 
 
 
 
-
-#ifdef BU_POINT_TO_STRING_CONVERTION
 // Std using
 std::string convertRectToString(const Point & leftDownCorner, const Point & rightTopCorner, const uint strSize, const char rectDelim = 0, const char pointDelim = 0);
 std::pair<Point, Point> convertRectFromString(const std::string &rectStr, const char rectDelim = 0, const char pointDelim = 0);
@@ -123,48 +83,7 @@ std::pair<Point, Point> convertRectFromString(const std::string &rectStr, const 
 // Qt using
 std::string convertRectToStringQ(const QRectF & rect, const uint strSize, const char rectDelim = 0, const char pointDelim = 0);
 QRectF convertRectFromStringQ(const std::string &rectStr, const char rectDelim = 0, const char pointDelim = 0);
-#endif // BU_POINT_TO_STRING_CONVERTION
-
-#endif // BU_POINT_FUNCTIONALITY
-
-
-
-
-
-
-#ifdef BU_PROCESS_INVOKING
-// Defines time before invoke function stops
-const int PROCESS_START_TIMEOUT {1000};
-
-#ifdef QT_CORE_LIB
-bool invokeQ(const QString & program, const QStringList & args, const int timeout, QString * output = nullptr, QString * errorOutput = nullptr);
-#endif // QT_CORE_LIB
-#endif // BU_PROCESS_INVOKING
-
-
-
-
-
-#ifdef BU_FILE_READ_WRITE
-// File read/write functions for fstream, can open files immediately
-const size_t FILE_READ_BUFFER_SIZE = 64;
-bool saveData(const std::string & filename, const std::string & dataBuf);
-bool saveData(std::fstream * of, const std::string & dataBuf);
-bool loadData(const std::string & filename, std::string & dataBuf);
-bool loadData(std::fstream * f, std::string & dataBuf);
-
-bool saveDataQ(const QString & filename, const QString & dataBuf);
-bool saveDataQ(QFile * of, const QString & dataBuf);
-bool loadDataQ(const QString & filename, QString & dataBuf);
-bool loadDataQ(QFile * f, QString & dataBuf);
-#endif // BU_FILE_READ_WRITE
-
-
-
-
-
-
-
 
 }
-#endif // BASICUTILS_H
+
+#endif // POINT_H
