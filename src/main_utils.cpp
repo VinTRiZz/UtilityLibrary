@@ -9,6 +9,7 @@ using namespace Utility;
 // Qt includes
 #ifdef QT_CORE_LIB
 #include <QProcess>
+#include <QThread>
 #include <QDebug>
 #endif // QT_CORE_LIB
 
@@ -28,11 +29,48 @@ uint Utility::factorial(long n)
 
 
 
+void Utility::pollThread(std::thread *pThread)
+{
+    if (!pThread)
+        return;
 
+    if (pThread->joinable())
+        pThread->join();
 
+    delete pThread;
+}
 
-#ifdef BU_PROCESS_INVOKING
+bool Utility::invoke(const std::string program, const std::string args, std::string *output)
+{
+    // TODO: Write-up
 #ifdef QT_CORE_LIB
+    Q_UNUSED(program)
+    Q_UNUSED(args)
+    Q_UNUSED(output)
+#endif // QT_CORE_LIB
+    return false;
+}
+
+#ifdef QT_CORE_LIB
+bool Utility::pollThreadQ(QThread *pThread, uint TIMEOUT)
+{
+    if (!pThread)
+        return false;
+
+    bool result = true;
+    if (pThread->isRunning())
+    {
+        if (!pThread->wait(TIMEOUT))
+            result = false;
+    }
+
+    if (pThread->isFinished())
+        pThread->exit();
+
+    delete pThread;
+    return result;
+}
+
 bool Utility::invokeQ(const QString &program, const QStringList &args, const int timeout, QString * output, QString * errorOutput)
 {
     QProcess invokingProcess;
@@ -71,14 +109,12 @@ bool Utility::invokeQ(const QString &program, const QStringList &args, const int
     return true;
 }
 #endif // QT_CORE_LIB
-#endif // BU_PROCESS_INVOKING
 
 
 
 
 
 
-#ifdef BU_FILE_READ_WRITE
 bool Utility::saveData(const std::string &filename, const std::string &dataBuf)
 {
     std::fstream of(filename, std::ios_base::out | std::ios_base::app);
@@ -172,4 +208,3 @@ bool Utility::loadDataQ(QFile *f, QString &dataBuf)
     return true;
 }
 #endif // QT_CORE_LIB
-#endif // BU_FILE_READ_WRITE

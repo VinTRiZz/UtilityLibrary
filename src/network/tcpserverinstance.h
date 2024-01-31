@@ -3,7 +3,7 @@
 
 #ifdef QT_CORE_LIB
 #ifndef QT_NETWORK_LIB
-#error "Qt network not connected"
+#error "Qt network library not connected. Try [ QT += network ] adding into .pro file"
 #endif // QT_NETWORK_LIB
 #endif // QT_CORE_LIB
 
