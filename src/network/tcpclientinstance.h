@@ -1,5 +1,5 @@
-#ifndef TCPCLIENTINSTANCE_H
-#define TCPCLIENTINSTANCE_H
+#ifndef UL_TCPCLIENTINSTANCE_H
+#define UL_TCPCLIENTINSTANCE_H
 
 #include <memory>
 
@@ -109,4 +109,4 @@ private slots:
 
 }
 
-#endif // TCPCLIENTINSTANCE_H
+#endif // UL_TCPCLIENTINSTANCE_H

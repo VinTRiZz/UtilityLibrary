@@ -1,2 +1,5 @@
-SOURCES += src/*.cpp
-HEADERS += src/*.h
+SOURCES += src/*.cpp \
+           src/network/*.cpp
+
+HEADERS += src/*.h \
+           src/network/*.h

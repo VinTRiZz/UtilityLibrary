@@ -1,5 +1,5 @@
-#ifndef GENERATORS_H
-#define GENERATORS_H
+#ifndef UL_GENERATORS_H
+#define UL_GENERATORS_H
 
 #include <string>
 #include <vector>
@@ -64,4 +64,4 @@ namespace Utility
 #endif // QT_CORE_LIB
     }
 }
-#endif // GENERATORS_H
+#endif // UL_GENERATORS_H

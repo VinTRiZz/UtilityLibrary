@@ -1,5 +1,5 @@
-#ifndef MAIN_UTILS_H
-#define MAIN_UTILS_H
+#ifndef UL_MAIN_UTILS_H
+#define UL_MAIN_UTILS_H
 
 // STD includes
 #include <string>
@@ -59,4 +59,4 @@ bool loadDataQ(QFile * f, QString & dataBuf);
 #endif // BU_FILE_READ_WRITE
 
 }
-#endif // MAIN_UTILS_H
+#endif // UL_MAIN_UTILS_H

@@ -54,15 +54,27 @@ SOURCES       = src/extendedtypes.cpp \
 		src/generators.cpp \
 		src/main_utils.cpp \
 		src/point.cpp \
-		src/tcpclientinstance.cpp \
-		src/tcpserverinstance.cpp BUILD/moc_tcpclientinstance.cpp
+		src/network/connectionworker.cpp \
+		src/network/packetprocessor.cpp \
+		src/network/tcpclientinstance.cpp \
+		src/network/tcpserverinstance.cpp \
+		src/network/threadmanager.cpp BUILD/moc_connectionworker.cpp \
+		BUILD/moc_packetprocessor.cpp \
+		BUILD/moc_tcpclientinstance.cpp \
+		BUILD/moc_threadmanager.cpp
 OBJECTS       = BUILD/extendedtypes.o \
 		BUILD/generators.o \
 		BUILD/main_utils.o \
 		BUILD/point.o \
+		BUILD/connectionworker.o \
+		BUILD/packetprocessor.o \
 		BUILD/tcpclientinstance.o \
 		BUILD/tcpserverinstance.o \
-		BUILD/moc_tcpclientinstance.o
+		BUILD/threadmanager.o \
+		BUILD/moc_connectionworker.o \
+		BUILD/moc_packetprocessor.o \
+		BUILD/moc_tcpclientinstance.o \
+		BUILD/moc_threadmanager.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/linux.conf \
@@ -145,18 +157,24 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exceptions.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/yacc.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
-		UtilityLibrary.pro src/exchangepacket.h \
-		src/extendedtypes.h \
+		UtilityLibrary.pro src/extendedtypes.h \
 		src/generators.h \
 		src/main_utils.h \
 		src/point.h \
-		src/tcpclientinstance.h \
-		src/tcpserverinstance.h src/extendedtypes.cpp \
+		src/network/connectionworker.h \
+		src/network/exchangepacket.h \
+		src/network/packetprocessor.h \
+		src/network/tcpclientinstance.h \
+		src/network/tcpserverinstance.h \
+		src/network/threadmanager.h src/extendedtypes.cpp \
 		src/generators.cpp \
 		src/main_utils.cpp \
 		src/point.cpp \
-		src/tcpclientinstance.cpp \
-		src/tcpserverinstance.cpp
+		src/network/connectionworker.cpp \
+		src/network/packetprocessor.cpp \
+		src/network/tcpclientinstance.cpp \
+		src/network/tcpserverinstance.cpp \
+		src/network/threadmanager.cpp
 QMAKE_TARGET  = UtilityLibrary
 DESTDIR       = BIN/
 TARGET        = libUtilityLibrary.so.1.0.0
@@ -382,8 +400,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents src/exchangepacket.h src/extendedtypes.h src/generators.h src/main_utils.h src/point.h src/tcpclientinstance.h src/tcpserverinstance.h $(DISTDIR)/
-	$(COPY_FILE) --parents src/extendedtypes.cpp src/generators.cpp src/main_utils.cpp src/point.cpp src/tcpclientinstance.cpp src/tcpserverinstance.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents src/extendedtypes.h src/generators.h src/main_utils.h src/point.h src/network/connectionworker.h src/network/exchangepacket.h src/network/packetprocessor.h src/network/tcpclientinstance.h src/network/tcpserverinstance.h src/network/threadmanager.h $(DISTDIR)/
+	$(COPY_FILE) --parents src/extendedtypes.cpp src/generators.cpp src/main_utils.cpp src/point.cpp src/network/connectionworker.cpp src/network/packetprocessor.cpp src/network/tcpclientinstance.cpp src/network/tcpserverinstance.cpp src/network/threadmanager.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -416,14 +434,35 @@ compiler_moc_predefs_clean:
 BUILD/moc_predefs.h: /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 	g++ -pipe -g -std=gnu++1y -Wall -W -dM -E -o BUILD/moc_predefs.h /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: BUILD/moc_tcpclientinstance.cpp
+compiler_moc_header_make_all: BUILD/moc_connectionworker.cpp BUILD/moc_packetprocessor.cpp BUILD/moc_tcpclientinstance.cpp BUILD/moc_threadmanager.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) BUILD/moc_tcpclientinstance.cpp
-BUILD/moc_tcpclientinstance.cpp: src/exchangepacket.h \
-		src/tcpclientinstance.h \
+	-$(DEL_FILE) BUILD/moc_connectionworker.cpp BUILD/moc_packetprocessor.cpp BUILD/moc_tcpclientinstance.cpp BUILD/moc_threadmanager.cpp
+BUILD/moc_connectionworker.cpp: src/network/packetprocessor.h \
+		src/network/exchangepacket.h \
+		src/network/connectionworker.h \
 		BUILD/moc_predefs.h \
 		/usr/lib/qt5/bin/moc
-	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/lazarev_as/Projects/Qt/UtilityLibrary/BUILD/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/lazarev_as/Projects/Qt/UtilityLibrary -I/home/lazarev_as/Projects/Qt/UtilityLibrary/src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/6 -I/usr/include/x86_64-linux-gnu/c++/6 -I/usr/include/c++/6/backward -I/usr/lib/gcc/x86_64-linux-gnu/6/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/6/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include src/tcpclientinstance.h -o BUILD/moc_tcpclientinstance.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/lazarev_as/Projects/Qt/UtilityLibrary/BUILD/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/lazarev_as/Projects/Qt/UtilityLibrary -I/home/lazarev_as/Projects/Qt/UtilityLibrary/src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/6 -I/usr/include/x86_64-linux-gnu/c++/6 -I/usr/include/c++/6/backward -I/usr/lib/gcc/x86_64-linux-gnu/6/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/6/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include src/network/connectionworker.h -o BUILD/moc_connectionworker.cpp
+
+BUILD/moc_packetprocessor.cpp: src/network/exchangepacket.h \
+		src/network/packetprocessor.h \
+		BUILD/moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/lazarev_as/Projects/Qt/UtilityLibrary/BUILD/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/lazarev_as/Projects/Qt/UtilityLibrary -I/home/lazarev_as/Projects/Qt/UtilityLibrary/src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/6 -I/usr/include/x86_64-linux-gnu/c++/6 -I/usr/include/c++/6/backward -I/usr/lib/gcc/x86_64-linux-gnu/6/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/6/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include src/network/packetprocessor.h -o BUILD/moc_packetprocessor.cpp
+
+BUILD/moc_tcpclientinstance.cpp: src/network/exchangepacket.h \
+		src/network/tcpclientinstance.h \
+		BUILD/moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/lazarev_as/Projects/Qt/UtilityLibrary/BUILD/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/lazarev_as/Projects/Qt/UtilityLibrary -I/home/lazarev_as/Projects/Qt/UtilityLibrary/src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/6 -I/usr/include/x86_64-linux-gnu/c++/6 -I/usr/include/c++/6/backward -I/usr/lib/gcc/x86_64-linux-gnu/6/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/6/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include src/network/tcpclientinstance.h -o BUILD/moc_tcpclientinstance.cpp
+
+BUILD/moc_threadmanager.cpp: src/network/connectionworker.h \
+		src/network/packetprocessor.h \
+		src/network/exchangepacket.h \
+		src/network/threadmanager.h \
+		BUILD/moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/lazarev_as/Projects/Qt/UtilityLibrary/BUILD/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/lazarev_as/Projects/Qt/UtilityLibrary -I/home/lazarev_as/Projects/Qt/UtilityLibrary/src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/6 -I/usr/include/x86_64-linux-gnu/c++/6 -I/usr/include/c++/6/backward -I/usr/lib/gcc/x86_64-linux-gnu/6/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/6/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include src/network/threadmanager.h -o BUILD/moc_threadmanager.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
@@ -452,15 +491,39 @@ BUILD/point.o: src/point.cpp src/point.h \
 		src/main_utils.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/point.o src/point.cpp
 
-BUILD/tcpclientinstance.o: src/tcpclientinstance.cpp src/tcpclientinstance.h \
-		src/exchangepacket.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/tcpclientinstance.o src/tcpclientinstance.cpp
+BUILD/connectionworker.o: src/network/connectionworker.cpp src/network/connectionworker.h \
+		src/network/packetprocessor.h \
+		src/network/exchangepacket.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/connectionworker.o src/network/connectionworker.cpp
 
-BUILD/tcpserverinstance.o: src/tcpserverinstance.cpp src/tcpserverinstance.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/tcpserverinstance.o src/tcpserverinstance.cpp
+BUILD/packetprocessor.o: src/network/packetprocessor.cpp src/network/packetprocessor.h \
+		src/network/exchangepacket.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/packetprocessor.o src/network/packetprocessor.cpp
+
+BUILD/tcpclientinstance.o: src/network/tcpclientinstance.cpp src/network/tcpclientinstance.h \
+		src/network/exchangepacket.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/tcpclientinstance.o src/network/tcpclientinstance.cpp
+
+BUILD/tcpserverinstance.o: src/network/tcpserverinstance.cpp src/network/tcpserverinstance.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/tcpserverinstance.o src/network/tcpserverinstance.cpp
+
+BUILD/threadmanager.o: src/network/threadmanager.cpp src/network/threadmanager.h \
+		src/network/connectionworker.h \
+		src/network/packetprocessor.h \
+		src/network/exchangepacket.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/threadmanager.o src/network/threadmanager.cpp
+
+BUILD/moc_connectionworker.o: BUILD/moc_connectionworker.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/moc_connectionworker.o BUILD/moc_connectionworker.cpp
+
+BUILD/moc_packetprocessor.o: BUILD/moc_packetprocessor.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/moc_packetprocessor.o BUILD/moc_packetprocessor.cpp
 
 BUILD/moc_tcpclientinstance.o: BUILD/moc_tcpclientinstance.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/moc_tcpclientinstance.o BUILD/moc_tcpclientinstance.cpp
+
+BUILD/moc_threadmanager.o: BUILD/moc_threadmanager.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/moc_threadmanager.o BUILD/moc_threadmanager.cpp
 
 ####### Install
 

@@ -1,5 +1,5 @@
-#ifndef EXCHANGEPACKET_H
-#define EXCHANGEPACKET_H
+#ifndef UL_EXCHANGEPACKET_H
+#define UL_EXCHANGEPACKET_H
 
 #ifdef QT_CORE_LIB
 #include <QString>
@@ -107,4 +107,4 @@ public:
 }
 
 
-#endif // EXCHANGEPACKET_H
+#endif // UL_EXCHANGEPACKET_H

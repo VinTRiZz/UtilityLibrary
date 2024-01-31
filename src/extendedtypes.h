@@ -1,5 +1,5 @@
-#ifndef EXTENDEDTYPES_H
-#define EXTENDEDTYPES_H
+#ifndef UL_EXTENDEDTYPES_H
+#define UL_EXTENDEDTYPES_H
 
 #include <mutex>
 #include <map>
@@ -43,4 +43,4 @@ private:
 }
 
 }
-#endif // EXTENDEDTYPES_H
+#endif // UL_EXTENDEDTYPES_H
