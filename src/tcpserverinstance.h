@@ -10,12 +10,19 @@ namespace Network
 
 // Qt-only server
 #ifdef QT_NETWORK_LIB
-class TcpServerInstance : public QTcpServer
+class TcpServerInstanceQ : public QTcpServer
+{
+public:
+    TcpServerInstanceQ();
+};
+#endif // QT_NETWORK_LIB
+
+class TcpServerInstance
 {
 public:
     TcpServerInstance();
+    ~TcpServerInstance();
 };
-#endif // QT_NETWORK_LIB
 
 }
 
