@@ -12,10 +12,10 @@ MAKEFILE      = Makefile
 
 CC            = gcc
 CXX           = g++
-DEFINES       = -DQT_QML_DEBUG -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB
+DEFINES       = -DQT_QML_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB
 CFLAGS        = -pipe -g -Wall -W -D_REENTRANT -fPIC $(DEFINES)
 CXXFLAGS      = -pipe -g -std=gnu++1y -Wall -W -D_REENTRANT -fPIC $(DEFINES)
-INCPATH       = -I. -Isrc -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtNetwork -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -IBUILD -isystem /usr/include/libdrm -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++
+INCPATH       = -I. -Isrc -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtNetwork -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -IBUILD -isystem /usr/include/libdrm -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++
 QMAKE         = /usr/lib/qt5/bin/qmake
 DEL_FILE      = rm -f
 CHK_DIR_EXISTS= test -d
@@ -38,7 +38,7 @@ DISTNAME      = UtilityLibrary1.0.0
 DISTDIR = /home/lazarev_as/Projects/Qt/UtilityLibrary/BUILD/UtilityLibrary1.0.0
 LINK          = g++
 LFLAGS        = -shared -Wl,-soname,libUtilityLibrary.so.1
-LIBS          = $(SUBLIBS) -lcrypto -lQt5Gui -lQt5Network -lQt5Core -lGL -lpthread 
+LIBS          = $(SUBLIBS) -lcrypto -lQt5Widgets -lQt5Gui -lQt5Network -lQt5Core -lGL -lpthread 
 AR            = ar cqs
 RANLIB        = 
 SED           = sed
@@ -64,13 +64,16 @@ SOURCES       = src/extendedtypes.cpp \
 		src/process/configworker.cpp \
 		src/process/etc.cpp \
 		src/process/processobserver.cpp \
-		src/process/worker.cpp BUILD/moc_connectionworker.cpp \
+		src/process/worker.cpp \
+		src/qt_widgets/drawwidget.cpp \
+		src/qt_widgets/figures.cpp BUILD/moc_connectionworker.cpp \
 		BUILD/moc_packetprocessor.cpp \
 		BUILD/moc_tcpclientinstance.cpp \
 		BUILD/moc_threadmanager.cpp \
 		BUILD/moc_udpclientinstance.cpp \
 		BUILD/moc_udpserverinstance.cpp \
-		BUILD/moc_worker.cpp
+		BUILD/moc_worker.cpp \
+		BUILD/moc_drawwidget.cpp
 OBJECTS       = BUILD/extendedtypes.o \
 		BUILD/generators.o \
 		BUILD/main_utils.o \
@@ -86,13 +89,16 @@ OBJECTS       = BUILD/extendedtypes.o \
 		BUILD/etc.o \
 		BUILD/processobserver.o \
 		BUILD/worker.o \
+		BUILD/drawwidget.o \
+		BUILD/figures.o \
 		BUILD/moc_connectionworker.o \
 		BUILD/moc_packetprocessor.o \
 		BUILD/moc_tcpclientinstance.o \
 		BUILD/moc_threadmanager.o \
 		BUILD/moc_udpclientinstance.o \
 		BUILD/moc_udpserverinstance.o \
-		BUILD/moc_worker.o
+		BUILD/moc_worker.o \
+		BUILD/moc_drawwidget.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/linux.conf \
@@ -168,6 +174,7 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/resources.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/moc.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/unix/opengl.prf \
+		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/uic.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/unix/thread.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/qmake_use.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/file_copies.prf \
@@ -190,7 +197,9 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		src/process/configworker.h \
 		src/process/etc.h \
 		src/process/processobserver.h \
-		src/process/worker.h src/extendedtypes.cpp \
+		src/process/worker.h \
+		src/qt_widgets/drawwidget.h \
+		src/qt_widgets/figures.h src/extendedtypes.cpp \
 		src/generators.cpp \
 		src/main_utils.cpp \
 		src/point.cpp \
@@ -204,7 +213,9 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		src/process/configworker.cpp \
 		src/process/etc.cpp \
 		src/process/processobserver.cpp \
-		src/process/worker.cpp
+		src/process/worker.cpp \
+		src/qt_widgets/drawwidget.cpp \
+		src/qt_widgets/figures.cpp
 QMAKE_TARGET  = UtilityLibrary
 DESTDIR       = BIN/
 TARGET        = libUtilityLibrary.so.1.0.0
@@ -317,6 +328,7 @@ Makefile: UtilityLibrary.pro /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qma
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/resources.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/moc.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/unix/opengl.prf \
+		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/uic.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/unix/thread.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/qmake_use.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/file_copies.prf \
@@ -325,6 +337,7 @@ Makefile: UtilityLibrary.pro /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qma
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/yacc.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
 		UtilityLibrary.pro \
+		/usr/lib/x86_64-linux-gnu/libQt5Widgets.prl \
 		/usr/lib/x86_64-linux-gnu/libQt5Gui.prl \
 		/usr/lib/x86_64-linux-gnu/libQt5Network.prl \
 		/usr/lib/x86_64-linux-gnu/libQt5Core.prl
@@ -404,6 +417,7 @@ build.pri:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/resources.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/moc.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/unix/opengl.prf:
+/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/uic.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/unix/thread.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/qmake_use.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/file_copies.prf:
@@ -412,6 +426,7 @@ build.pri:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/yacc.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf:
 UtilityLibrary.pro:
+/usr/lib/x86_64-linux-gnu/libQt5Widgets.prl:
 /usr/lib/x86_64-linux-gnu/libQt5Gui.prl:
 /usr/lib/x86_64-linux-gnu/libQt5Network.prl:
 /usr/lib/x86_64-linux-gnu/libQt5Core.prl:
@@ -430,8 +445,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents src/extendedtypes.h src/generators.h src/main_utils.h src/point.h src/network/connectionworker.h src/network/exchangepacket.h src/network/packetprocessor.h src/network/tcpclientinstance.h src/network/tcpserverinstance.h src/network/threadmanager.h src/network/udpclientinstance.h src/network/udpserverinstance.h src/process/configworker.h src/process/etc.h src/process/processobserver.h src/process/worker.h $(DISTDIR)/
-	$(COPY_FILE) --parents src/extendedtypes.cpp src/generators.cpp src/main_utils.cpp src/point.cpp src/network/connectionworker.cpp src/network/packetprocessor.cpp src/network/tcpclientinstance.cpp src/network/tcpserverinstance.cpp src/network/threadmanager.cpp src/network/udpclientinstance.cpp src/network/udpserverinstance.cpp src/process/configworker.cpp src/process/etc.cpp src/process/processobserver.cpp src/process/worker.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents src/extendedtypes.h src/generators.h src/main_utils.h src/point.h src/network/connectionworker.h src/network/exchangepacket.h src/network/packetprocessor.h src/network/tcpclientinstance.h src/network/tcpserverinstance.h src/network/threadmanager.h src/network/udpclientinstance.h src/network/udpserverinstance.h src/process/configworker.h src/process/etc.h src/process/processobserver.h src/process/worker.h src/qt_widgets/drawwidget.h src/qt_widgets/figures.h $(DISTDIR)/
+	$(COPY_FILE) --parents src/extendedtypes.cpp src/generators.cpp src/main_utils.cpp src/point.cpp src/network/connectionworker.cpp src/network/packetprocessor.cpp src/network/tcpclientinstance.cpp src/network/tcpserverinstance.cpp src/network/threadmanager.cpp src/network/udpclientinstance.cpp src/network/udpserverinstance.cpp src/process/configworker.cpp src/process/etc.cpp src/process/processobserver.cpp src/process/worker.cpp src/qt_widgets/drawwidget.cpp src/qt_widgets/figures.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -464,27 +479,27 @@ compiler_moc_predefs_clean:
 BUILD/moc_predefs.h: /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 	g++ -pipe -g -std=gnu++1y -Wall -W -dM -E -o BUILD/moc_predefs.h /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: BUILD/moc_connectionworker.cpp BUILD/moc_packetprocessor.cpp BUILD/moc_tcpclientinstance.cpp BUILD/moc_threadmanager.cpp BUILD/moc_udpclientinstance.cpp BUILD/moc_udpserverinstance.cpp BUILD/moc_worker.cpp
+compiler_moc_header_make_all: BUILD/moc_connectionworker.cpp BUILD/moc_packetprocessor.cpp BUILD/moc_tcpclientinstance.cpp BUILD/moc_threadmanager.cpp BUILD/moc_udpclientinstance.cpp BUILD/moc_udpserverinstance.cpp BUILD/moc_worker.cpp BUILD/moc_drawwidget.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) BUILD/moc_connectionworker.cpp BUILD/moc_packetprocessor.cpp BUILD/moc_tcpclientinstance.cpp BUILD/moc_threadmanager.cpp BUILD/moc_udpclientinstance.cpp BUILD/moc_udpserverinstance.cpp BUILD/moc_worker.cpp
+	-$(DEL_FILE) BUILD/moc_connectionworker.cpp BUILD/moc_packetprocessor.cpp BUILD/moc_tcpclientinstance.cpp BUILD/moc_threadmanager.cpp BUILD/moc_udpclientinstance.cpp BUILD/moc_udpserverinstance.cpp BUILD/moc_worker.cpp BUILD/moc_drawwidget.cpp
 BUILD/moc_connectionworker.cpp: src/network/packetprocessor.h \
 		src/network/exchangepacket.h \
 		src/network/connectionworker.h \
 		BUILD/moc_predefs.h \
 		/usr/lib/qt5/bin/moc
-	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/lazarev_as/Projects/Qt/UtilityLibrary/BUILD/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/lazarev_as/Projects/Qt/UtilityLibrary -I/home/lazarev_as/Projects/Qt/UtilityLibrary/src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/6 -I/usr/include/x86_64-linux-gnu/c++/6 -I/usr/include/c++/6/backward -I/usr/lib/gcc/x86_64-linux-gnu/6/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/6/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include src/network/connectionworker.h -o BUILD/moc_connectionworker.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/lazarev_as/Projects/Qt/UtilityLibrary/BUILD/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/lazarev_as/Projects/Qt/UtilityLibrary -I/home/lazarev_as/Projects/Qt/UtilityLibrary/src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/6 -I/usr/include/x86_64-linux-gnu/c++/6 -I/usr/include/c++/6/backward -I/usr/lib/gcc/x86_64-linux-gnu/6/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/6/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include src/network/connectionworker.h -o BUILD/moc_connectionworker.cpp
 
 BUILD/moc_packetprocessor.cpp: src/network/exchangepacket.h \
 		src/network/packetprocessor.h \
 		BUILD/moc_predefs.h \
 		/usr/lib/qt5/bin/moc
-	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/lazarev_as/Projects/Qt/UtilityLibrary/BUILD/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/lazarev_as/Projects/Qt/UtilityLibrary -I/home/lazarev_as/Projects/Qt/UtilityLibrary/src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/6 -I/usr/include/x86_64-linux-gnu/c++/6 -I/usr/include/c++/6/backward -I/usr/lib/gcc/x86_64-linux-gnu/6/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/6/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include src/network/packetprocessor.h -o BUILD/moc_packetprocessor.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/lazarev_as/Projects/Qt/UtilityLibrary/BUILD/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/lazarev_as/Projects/Qt/UtilityLibrary -I/home/lazarev_as/Projects/Qt/UtilityLibrary/src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/6 -I/usr/include/x86_64-linux-gnu/c++/6 -I/usr/include/c++/6/backward -I/usr/lib/gcc/x86_64-linux-gnu/6/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/6/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include src/network/packetprocessor.h -o BUILD/moc_packetprocessor.cpp
 
 BUILD/moc_tcpclientinstance.cpp: src/network/exchangepacket.h \
 		src/network/tcpclientinstance.h \
 		BUILD/moc_predefs.h \
 		/usr/lib/qt5/bin/moc
-	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/lazarev_as/Projects/Qt/UtilityLibrary/BUILD/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/lazarev_as/Projects/Qt/UtilityLibrary -I/home/lazarev_as/Projects/Qt/UtilityLibrary/src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/6 -I/usr/include/x86_64-linux-gnu/c++/6 -I/usr/include/c++/6/backward -I/usr/lib/gcc/x86_64-linux-gnu/6/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/6/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include src/network/tcpclientinstance.h -o BUILD/moc_tcpclientinstance.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/lazarev_as/Projects/Qt/UtilityLibrary/BUILD/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/lazarev_as/Projects/Qt/UtilityLibrary -I/home/lazarev_as/Projects/Qt/UtilityLibrary/src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/6 -I/usr/include/x86_64-linux-gnu/c++/6 -I/usr/include/c++/6/backward -I/usr/lib/gcc/x86_64-linux-gnu/6/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/6/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include src/network/tcpclientinstance.h -o BUILD/moc_tcpclientinstance.cpp
 
 BUILD/moc_threadmanager.cpp: src/network/connectionworker.h \
 		src/network/packetprocessor.h \
@@ -492,30 +507,38 @@ BUILD/moc_threadmanager.cpp: src/network/connectionworker.h \
 		src/network/threadmanager.h \
 		BUILD/moc_predefs.h \
 		/usr/lib/qt5/bin/moc
-	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/lazarev_as/Projects/Qt/UtilityLibrary/BUILD/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/lazarev_as/Projects/Qt/UtilityLibrary -I/home/lazarev_as/Projects/Qt/UtilityLibrary/src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/6 -I/usr/include/x86_64-linux-gnu/c++/6 -I/usr/include/c++/6/backward -I/usr/lib/gcc/x86_64-linux-gnu/6/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/6/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include src/network/threadmanager.h -o BUILD/moc_threadmanager.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/lazarev_as/Projects/Qt/UtilityLibrary/BUILD/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/lazarev_as/Projects/Qt/UtilityLibrary -I/home/lazarev_as/Projects/Qt/UtilityLibrary/src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/6 -I/usr/include/x86_64-linux-gnu/c++/6 -I/usr/include/c++/6/backward -I/usr/lib/gcc/x86_64-linux-gnu/6/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/6/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include src/network/threadmanager.h -o BUILD/moc_threadmanager.cpp
 
 BUILD/moc_udpclientinstance.cpp: src/network/exchangepacket.h \
 		src/network/udpclientinstance.h \
 		BUILD/moc_predefs.h \
 		/usr/lib/qt5/bin/moc
-	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/lazarev_as/Projects/Qt/UtilityLibrary/BUILD/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/lazarev_as/Projects/Qt/UtilityLibrary -I/home/lazarev_as/Projects/Qt/UtilityLibrary/src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/6 -I/usr/include/x86_64-linux-gnu/c++/6 -I/usr/include/c++/6/backward -I/usr/lib/gcc/x86_64-linux-gnu/6/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/6/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include src/network/udpclientinstance.h -o BUILD/moc_udpclientinstance.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/lazarev_as/Projects/Qt/UtilityLibrary/BUILD/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/lazarev_as/Projects/Qt/UtilityLibrary -I/home/lazarev_as/Projects/Qt/UtilityLibrary/src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/6 -I/usr/include/x86_64-linux-gnu/c++/6 -I/usr/include/c++/6/backward -I/usr/lib/gcc/x86_64-linux-gnu/6/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/6/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include src/network/udpclientinstance.h -o BUILD/moc_udpclientinstance.cpp
 
 BUILD/moc_udpserverinstance.cpp: src/network/exchangepacket.h \
 		src/network/udpserverinstance.h \
 		BUILD/moc_predefs.h \
 		/usr/lib/qt5/bin/moc
-	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/lazarev_as/Projects/Qt/UtilityLibrary/BUILD/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/lazarev_as/Projects/Qt/UtilityLibrary -I/home/lazarev_as/Projects/Qt/UtilityLibrary/src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/6 -I/usr/include/x86_64-linux-gnu/c++/6 -I/usr/include/c++/6/backward -I/usr/lib/gcc/x86_64-linux-gnu/6/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/6/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include src/network/udpserverinstance.h -o BUILD/moc_udpserverinstance.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/lazarev_as/Projects/Qt/UtilityLibrary/BUILD/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/lazarev_as/Projects/Qt/UtilityLibrary -I/home/lazarev_as/Projects/Qt/UtilityLibrary/src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/6 -I/usr/include/x86_64-linux-gnu/c++/6 -I/usr/include/c++/6/backward -I/usr/lib/gcc/x86_64-linux-gnu/6/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/6/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include src/network/udpserverinstance.h -o BUILD/moc_udpserverinstance.cpp
 
 BUILD/moc_worker.cpp: src/process/configworker.h \
 		src/process/worker.h \
 		BUILD/moc_predefs.h \
 		/usr/lib/qt5/bin/moc
-	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/lazarev_as/Projects/Qt/UtilityLibrary/BUILD/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/lazarev_as/Projects/Qt/UtilityLibrary -I/home/lazarev_as/Projects/Qt/UtilityLibrary/src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/6 -I/usr/include/x86_64-linux-gnu/c++/6 -I/usr/include/c++/6/backward -I/usr/lib/gcc/x86_64-linux-gnu/6/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/6/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include src/process/worker.h -o BUILD/moc_worker.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/lazarev_as/Projects/Qt/UtilityLibrary/BUILD/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/lazarev_as/Projects/Qt/UtilityLibrary -I/home/lazarev_as/Projects/Qt/UtilityLibrary/src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/6 -I/usr/include/x86_64-linux-gnu/c++/6 -I/usr/include/c++/6/backward -I/usr/lib/gcc/x86_64-linux-gnu/6/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/6/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include src/process/worker.h -o BUILD/moc_worker.cpp
+
+BUILD/moc_drawwidget.cpp: src/qt_widgets/figures.h \
+		src/qt_widgets/drawwidget.h \
+		BUILD/moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/lazarev_as/Projects/Qt/UtilityLibrary/BUILD/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/lazarev_as/Projects/Qt/UtilityLibrary -I/home/lazarev_as/Projects/Qt/UtilityLibrary/src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/6 -I/usr/include/x86_64-linux-gnu/c++/6 -I/usr/include/c++/6/backward -I/usr/lib/gcc/x86_64-linux-gnu/6/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/6/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include src/qt_widgets/drawwidget.h -o BUILD/moc_drawwidget.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
+compiler_uic_make_all:
+compiler_uic_clean:
 compiler_yacc_decl_make_all:
 compiler_yacc_decl_clean:
 compiler_yacc_impl_make_all:
@@ -588,6 +611,13 @@ BUILD/worker.o: src/process/worker.cpp src/process/worker.h \
 		src/process/configworker.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/worker.o src/process/worker.cpp
 
+BUILD/drawwidget.o: src/qt_widgets/drawwidget.cpp src/qt_widgets/drawwidget.h \
+		src/qt_widgets/figures.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/drawwidget.o src/qt_widgets/drawwidget.cpp
+
+BUILD/figures.o: src/qt_widgets/figures.cpp src/qt_widgets/figures.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/figures.o src/qt_widgets/figures.cpp
+
 BUILD/moc_connectionworker.o: BUILD/moc_connectionworker.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/moc_connectionworker.o BUILD/moc_connectionworker.cpp
 
@@ -608,6 +638,9 @@ BUILD/moc_udpserverinstance.o: BUILD/moc_udpserverinstance.cpp
 
 BUILD/moc_worker.o: BUILD/moc_worker.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/moc_worker.o BUILD/moc_worker.cpp
+
+BUILD/moc_drawwidget.o: BUILD/moc_drawwidget.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/moc_drawwidget.o BUILD/moc_drawwidget.cpp
 
 ####### Install
 

@@ -3,13 +3,13 @@
 #include "threadmanager.h"
 
 #ifdef QT_NETWORK_LIB
-struct Network::TcpServerInstanceQ::Impl
+struct Utility::Network::TcpServerInstanceQ::Impl
 {
     // For constructor, destructor
     std::function<void()> m_initer;
     std::function<void()> m_deiniter;
 
-    Network::ThreadManager& m_conManager;
+    Utility::Network::ThreadManager& m_conManager;
 
     // For packet processing
     std::function<void(const Exchange::Packet&, Exchange::Packet&)> m_infoProcessor;
@@ -19,25 +19,25 @@ struct Network::TcpServerInstanceQ::Impl
     Impl(std::function<void()> initer, std::function<void()> deiniter) :
         m_initer {initer},
         m_deiniter {deiniter},
-        m_conManager{Network::ThreadManager::getInstance(m_initer, m_deiniter)}
+        m_conManager{Utility::Network::ThreadManager::getInstance(m_initer, m_deiniter)}
     {
 
     }
 };
 
-Network::TcpServerInstanceQ::TcpServerInstanceQ(std::function<void()> initer, std::function<void()> deiniter, QObject *parent):
+Utility::Network::TcpServerInstanceQ::TcpServerInstanceQ(std::function<void()> initer, std::function<void()> deiniter, QObject *parent):
     QTcpServer(parent),
     d {new Impl(initer, deiniter)}
 {
 
 }
 
-Network::TcpServerInstanceQ::~TcpServerInstanceQ()
+Utility::Network::TcpServerInstanceQ::~TcpServerInstanceQ()
 {
 
 }
 
-bool Network::TcpServerInstanceQ::start(const QHostAddress hostAddress, const unsigned port)
+bool Utility::Network::TcpServerInstanceQ::start(const QHostAddress hostAddress, const unsigned port)
 {
     if (!listen(hostAddress, port))
     {
@@ -51,25 +51,25 @@ bool Network::TcpServerInstanceQ::start(const QHostAddress hostAddress, const un
     return true;
 }
 
-void Network::TcpServerInstanceQ::setInfoProcessor(std::function<void (const Exchange::Packet &, Exchange::Packet &)> infoProcessor)
+void Utility::Network::TcpServerInstanceQ::setInfoProcessor(std::function<void (const Exchange::Packet &, Exchange::Packet &)> infoProcessor)
 {
     d->m_infoProcessor = infoProcessor;
     d->m_conManager.setInfoProcessor(d->m_infoProcessor);
 }
 
-void Network::TcpServerInstanceQ::setActionProcessor(std::function<void (const Exchange::Packet &, Exchange::Packet &)> actionProcessor)
+void Utility::Network::TcpServerInstanceQ::setActionProcessor(std::function<void (const Exchange::Packet &, Exchange::Packet &)> actionProcessor)
 {
     d->m_actionProcessor = actionProcessor;
     d->m_conManager.setActionProcessor(d->m_actionProcessor);
 }
 
-void Network::TcpServerInstanceQ::setErrorProcessor(std::function<void (const Exchange::Packet &)> errorProcessor)
+void Utility::Network::TcpServerInstanceQ::setErrorProcessor(std::function<void (const Exchange::Packet &)> errorProcessor)
 {
     d->m_errorProcessor = errorProcessor;
     d->m_conManager.setErrorProcessor(d->m_errorProcessor);
 }
 
-void Network::TcpServerInstanceQ::incomingConnection(qintptr handle)
+void Utility::Network::TcpServerInstanceQ::incomingConnection(qintptr handle)
 {
     d->m_conManager.createConnection(handle);
 }
@@ -80,12 +80,12 @@ void Network::TcpServerInstanceQ::incomingConnection(qintptr handle)
 
 
 
-Network::TcpServerInstance::TcpServerInstance()
+Utility::Network::TcpServerInstance::TcpServerInstance()
 {
 
 }
 
-Network::TcpServerInstance::~TcpServerInstance()
+Utility::Network::TcpServerInstance::~TcpServerInstance()
 {
 
 }

@@ -8,7 +8,7 @@
 
 #warning "Взять проект из дома, этот ужасный с точки зрения реализации"
 
-namespace Network
+namespace Utility::Network
 {
 
 class UdpServerInstanceQ : public QObject

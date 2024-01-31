@@ -16,7 +16,7 @@
 
 #include "exchangepacket.h"
 
-namespace Network
+namespace Utility::Network
 {
 
 // Qt-only server

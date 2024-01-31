@@ -3,7 +3,7 @@
 #include <QUdpSocket>
 #include <QThread>
 
-struct Network::UdpClientInstanceQ::Impl
+struct Utility::Network::UdpClientInstanceQ::Impl
 {
     QString errorText;
     QUdpSocket * m_socket {nullptr};
@@ -13,7 +13,7 @@ struct Network::UdpClientInstanceQ::Impl
     uint16_t port {};
 };
 
-Network::UdpClientInstanceQ::UdpClientInstanceQ(QObject * parent):
+Utility::Network::UdpClientInstanceQ::UdpClientInstanceQ(QObject * parent):
     QObject(parent),
     d { new Impl() }
 {
@@ -24,26 +24,26 @@ Network::UdpClientInstanceQ::UdpClientInstanceQ(QObject * parent):
     moveToThread(d->m_socketThread);
 }
 
-Network::UdpClientInstanceQ::~UdpClientInstanceQ()
+Utility::Network::UdpClientInstanceQ::~UdpClientInstanceQ()
 {
     d->m_socket->close();
     d->m_socketThread->exit();
     delete d->m_socket;
 }
 
-void Network::UdpClientInstanceQ::setup(const QHostAddress hostAddress, const uint16_t port)
+void Utility::Network::UdpClientInstanceQ::setup(const QHostAddress hostAddress, const uint16_t port)
 {
     d->hostAddress = hostAddress;
     d->port = port;
 }
 
-bool Network::UdpClientInstanceQ::sendPacket(Exchange::Packet &data)
+bool Utility::Network::UdpClientInstanceQ::sendPacket(Exchange::Packet &data)
 {
     QByteArray sendData = Exchange::PacketConverter::convert(data);
     return sendMessage(sendData);
 }
 
-bool Network::UdpClientInstanceQ::sendMessage(const QByteArray &data)
+bool Utility::Network::UdpClientInstanceQ::sendMessage(const QByteArray &data)
 {
     if (!d->m_socket->writeDatagram(data, d->hostAddress, d->port))
     {
@@ -53,4 +53,4 @@ bool Network::UdpClientInstanceQ::sendMessage(const QByteArray &data)
     return true;
 }
 
-QString Network::UdpClientInstanceQ::errorText() const { return d->errorText; }
+QString Utility::Network::UdpClientInstanceQ::errorText() const { return d->errorText; }

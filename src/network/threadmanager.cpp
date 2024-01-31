@@ -5,36 +5,36 @@
 
 #define THREAD_SHUTDOWN_TIMEOUT_MS 1000
 
-Network::ThreadManager&Network::ThreadManager::getInstance(std::function<void()> & initer, std::function<void()> & deiniter)
+Utility::Network::ThreadManager&Utility::Network::ThreadManager::getInstance(std::function<void()> & initer, std::function<void()> & deiniter)
 {
     static ThreadManager manager(initer, deiniter);
 
     return manager;
 }
 
-void Network::ThreadManager::setInfoProcessor(std::function<void (const Exchange::Packet &, Exchange::Packet &)> &infoProcessor)
+void Utility::Network::ThreadManager::setInfoProcessor(std::function<void (const Exchange::Packet &, Exchange::Packet &)> &infoProcessor)
 {
     m_infoProcessor = infoProcessor;
 }
 
-void Network::ThreadManager::setActionProcessor(std::function<void (const Exchange::Packet &, Exchange::Packet &)> &actionProcessor)
+void Utility::Network::ThreadManager::setActionProcessor(std::function<void (const Exchange::Packet &, Exchange::Packet &)> &actionProcessor)
 {
     m_actionProcessor = actionProcessor;
 }
 
-void Network::ThreadManager::setErrorProcessor(std::function<void (const Exchange::Packet &)> &errorProcessor)
+void Utility::Network::ThreadManager::setErrorProcessor(std::function<void (const Exchange::Packet &)> &errorProcessor)
 {
     m_errorProcessor = errorProcessor;
 }
 
-Network::ThreadManager::ThreadManager(std::function<void()> &initer, std::function<void()> &deiniter) :
+Utility::Network::ThreadManager::ThreadManager(std::function<void()> &initer, std::function<void()> &deiniter) :
     m_initer {initer},
     m_deiniter {deiniter}
 {
     setThreadCount( QThread::idealThreadCount() );
 }
 
-Network::ThreadManager::~ThreadManager()
+Utility::Network::ThreadManager::~ThreadManager()
 {
     // Clear internal maps
     for (auto& pWorker : m_workers)
@@ -56,7 +56,7 @@ Network::ThreadManager::~ThreadManager()
     }
 }
 
-void Network::ThreadManager::rejectConnection(qintptr handler)
+void Utility::Network::ThreadManager::rejectConnection(qintptr handler)
 {
     // Reject connection if no threads available
     QTcpSocket socket;
@@ -64,7 +64,7 @@ void Network::ThreadManager::rejectConnection(qintptr handler)
     socket.disconnect();
 }
 
-void Network::ThreadManager::createConnection(qintptr handler)
+void Utility::Network::ThreadManager::createConnection(qintptr handler)
 {
     if (m_workers.size() >= m_maximumThreadCount)
     {
@@ -93,12 +93,12 @@ void Network::ThreadManager::createConnection(qintptr handler)
     QMetaObject::invokeMethod(pWorker, "setConnection", Qt::QueuedConnection, Q_ARG(int, handler), Q_ARG(unsigned long, workerId));
 }
 
-int Network::ThreadManager::availableThreads()
+int Utility::Network::ThreadManager::availableThreads()
 {
     return (m_maximumThreadCount - m_workers.size());
 }
 
-bool Network::ThreadManager::setThreadCount(int newCount)
+bool Utility::Network::ThreadManager::setThreadCount(int newCount)
 {
     if ((m_workers.size() > 0) || (newCount < 0))
         return false;
@@ -106,7 +106,7 @@ bool Network::ThreadManager::setThreadCount(int newCount)
     return true;
 }
 
-void Network::ThreadManager::onFinished()
+void Utility::Network::ThreadManager::onFinished()
 {
     ConnectionWorker * pWorker = static_cast<ConnectionWorker *>(sender());
     disconnect(pWorker, &ConnectionWorker::finished, this, &ThreadManager::onFinished);

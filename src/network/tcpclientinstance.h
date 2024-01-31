@@ -10,7 +10,7 @@
 #include <QObject>
 #endif // QT_CORE_LIB
 
-namespace Network
+namespace Utility::Network
 {
 
 #ifdef QT_NETWORK_LIB

@@ -1,0 +1,2 @@
+#include "../../../src/qt_widgets/figures.h"
+#include "../../../src/qt_widgets/drawwidget.h"

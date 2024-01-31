@@ -1,6 +1,6 @@
 ﻿#include "connectionworker.h"
 
-Network::ConnectionWorker::ConnectionWorker(std::function<void()> &initer,
+Utility::Network::ConnectionWorker::ConnectionWorker(std::function<void()> &initer,
                                             std::function<void()> &deiniter,
                                             std::function<void(const Exchange::Packet &, Exchange::Packet &)>& infoProcessor,
                                             std::function<void(const Exchange::Packet &, Exchange::Packet &)>& actionProcessor,
@@ -13,7 +13,7 @@ Network::ConnectionWorker::ConnectionWorker(std::function<void()> &initer,
 
 }
 
-Network::ConnectionWorker::~ConnectionWorker()
+Utility::Network::ConnectionWorker::~ConnectionWorker()
 {
     disconnect(m_pCon.get(),&QTcpSocket::readyRead, this,&ConnectionWorker::onMessage);
     disconnect(m_pCon.get(),&QTcpSocket::disconnected, this,&ConnectionWorker::onDisconnect);
@@ -22,7 +22,7 @@ Network::ConnectionWorker::~ConnectionWorker()
         m_pCon->disconnectFromHost();
 }
 
-void Network::ConnectionWorker::setConnection(int descriptor, unsigned long workerId)
+void Utility::Network::ConnectionWorker::setConnection(int descriptor, unsigned long workerId)
 {
     if (QTcpSocket::ConnectedState == m_pCon->state())
     {
@@ -41,13 +41,13 @@ void Network::ConnectionWorker::setConnection(int descriptor, unsigned long work
 }
 
 
-unsigned long Network::ConnectionWorker::getId() const
+unsigned long Utility::Network::ConnectionWorker::getId() const
 {
     return m_workerId;
 }
 
 
-void Network::ConnectionWorker::onDisconnect()
+void Utility::Network::ConnectionWorker::onDisconnect()
 {
     qDebug() << "Client disconnected: [\033[33m" << m_workerId << "\033[0m]";
     m_pCon->deleteLater();
@@ -55,7 +55,7 @@ void Network::ConnectionWorker::onDisconnect()
 }
 
 
-void Network::ConnectionWorker::onMessage()
+void Utility::Network::ConnectionWorker::onMessage()
 {
     if (!m_pCon->isOpen())
     {

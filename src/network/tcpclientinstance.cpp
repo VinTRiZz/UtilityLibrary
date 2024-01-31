@@ -3,7 +3,7 @@
 #include <QTcpSocket>
 #include <QThread>
 
-using namespace Network;
+using namespace Utility::Network;
 
 #ifdef QT_NETWORK_LIB
 struct TcpCLientInstanceQ::Impl
@@ -23,27 +23,27 @@ struct TcpCLientInstanceQ::Impl
     uint16_t m_serverPort {8000};
 };
 
-Network::TcpCLientInstanceQ::TcpCLientInstanceQ(QObject *parent) :
+Utility::Network::TcpCLientInstanceQ::TcpCLientInstanceQ(QObject *parent) :
     QObject(parent),
     d{new Impl()}
 {
-    QObject::connect(this, &Network::TcpCLientInstanceQ::sendMessage, this, &Network::TcpCLientInstanceQ::sendMessageSlot);
+    QObject::connect(this, &Utility::Network::TcpCLientInstanceQ::sendMessage, this, &Utility::Network::TcpCLientInstanceQ::sendMessageSlot);
     qRegisterMetaType<Exchange::Packet>("Exchange::Packet");
 
-    QObject::connect(&d->m_client, &QTcpSocket::readyRead, this, &Network::TcpCLientInstanceQ::onMessage);
-    QObject::connect(&d->m_client, &QTcpSocket::disconnected, this, &Network::TcpCLientInstanceQ::onFail);
+    QObject::connect(&d->m_client, &QTcpSocket::readyRead, this, &Utility::Network::TcpCLientInstanceQ::onMessage);
+    QObject::connect(&d->m_client, &QTcpSocket::disconnected, this, &Utility::Network::TcpCLientInstanceQ::onFail);
 }
 
-Network::TcpCLientInstanceQ::~TcpCLientInstanceQ()
+Utility::Network::TcpCLientInstanceQ::~TcpCLientInstanceQ()
 {
-    QObject::disconnect(&d->m_client, &QTcpSocket::readyRead, this, &Network::TcpCLientInstanceQ::onMessage);
-    QObject::disconnect(&d->m_client, &QTcpSocket::disconnected, this, &Network::TcpCLientInstanceQ::onFail);
+    QObject::disconnect(&d->m_client, &QTcpSocket::readyRead, this, &Utility::Network::TcpCLientInstanceQ::onMessage);
+    QObject::disconnect(&d->m_client, &QTcpSocket::disconnected, this, &Utility::Network::TcpCLientInstanceQ::onFail);
 
     if (isConnected())
-        Network::TcpCLientInstanceQ::disconnect();
+        Utility::Network::TcpCLientInstanceQ::disconnect();
 }
 
-void Network::TcpCLientInstanceQ::setupServer(const QString& address, uint16_t port)
+void Utility::Network::TcpCLientInstanceQ::setupServer(const QString& address, uint16_t port)
 {
     if (!isConnected())
     {
@@ -52,7 +52,7 @@ void Network::TcpCLientInstanceQ::setupServer(const QString& address, uint16_t p
     }
 }
 
-bool Network::TcpCLientInstanceQ::waitForSend(int TIMEOUT)
+bool Utility::Network::TcpCLientInstanceQ::waitForSend(int TIMEOUT)
 {
     return d->m_client.waitForBytesWritten(TIMEOUT);
 }
@@ -67,7 +67,7 @@ void TcpCLientInstanceQ::setSendTimeout(uint16_t TIMEOUT)
     d->SEND_TIMEOUT = TIMEOUT;
 }
 
-void Network::TcpCLientInstanceQ::connect()
+void Utility::Network::TcpCLientInstanceQ::connect()
 {
     if (isConnected()) return; // Connect only if disconnected
 
@@ -87,7 +87,7 @@ void Network::TcpCLientInstanceQ::connect()
         emit connected();
     }
 }
-void Network::TcpCLientInstanceQ::disconnect()
+void Utility::Network::TcpCLientInstanceQ::disconnect()
 {
     if (!isConnected()) return; // Disconnect only if connected
 
@@ -102,12 +102,12 @@ void Network::TcpCLientInstanceQ::disconnect()
     if (!isConnected())
         emit disconnected();
 }
-bool Network::TcpCLientInstanceQ::isConnected()
+bool Utility::Network::TcpCLientInstanceQ::isConnected()
 {
     return (d->m_client.state() == QTcpSocket::SocketState::ConnectedState);
 }
 
-void Network::TcpCLientInstanceQ::sendMessageSlot(const Exchange::Packet& sendPacket)
+void Utility::Network::TcpCLientInstanceQ::sendMessageSlot(const Exchange::Packet& sendPacket)
 {
     if (!isConnected()) return;
 
@@ -129,22 +129,22 @@ void Network::TcpCLientInstanceQ::sendMessageSlot(const Exchange::Packet& sendPa
     if (!d->m_client.waitForBytesWritten(d->SEND_TIMEOUT))
         qDebug() << "[\033[31mE\033[0m]: SEND TIMEOUT";}
 
-Exchange::Packet Network::TcpCLientInstanceQ::getMessage()
+Exchange::Packet Utility::Network::TcpCLientInstanceQ::getMessage()
 {
     return getMessage();
 }
 
-bool Network::TcpCLientInstanceQ::messagesAvailable() const
+bool Utility::Network::TcpCLientInstanceQ::messagesAvailable() const
 {
     return d->m_responseGot;
 }
 
-void Network::TcpCLientInstanceQ::onFail() // QAbstractSocket::SocketError errCode
+void Utility::Network::TcpCLientInstanceQ::onFail() // QAbstractSocket::SocketError errCode
 {
     qDebug() << "[\033[33mW\033[0m] Disconnected";
     emit disconnected();
 }
-void Network::TcpCLientInstanceQ::onMessage()
+void Utility::Network::TcpCLientInstanceQ::onMessage()
 {
     d->readBuf = d->m_client.readAll();
     if (d->readBuf.size() < 2) return;

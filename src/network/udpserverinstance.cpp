@@ -12,9 +12,9 @@
 
 #define UDP_SERVER_PORT 8000
 
-struct Network::UdpServerInstanceQ::Impl
+struct Utility::Network::UdpServerInstanceQ::Impl
 {
-    Network::UdpServerInstanceQ * pMainClass {nullptr};
+    Utility::Network::UdpServerInstanceQ * pMainClass {nullptr};
 
     QUdpSocket * m_socket {nullptr};
     const QByteArray receivedResponse = "RECEIVED";
@@ -35,14 +35,14 @@ struct Network::UdpServerInstanceQ::Impl
     std::mutex threadFinishedMx;
     std::condition_variable threadFinishedConVar;
 
-    Impl(Network::UdpServerInstanceQ * mainClass) :
+    Impl(Utility::Network::UdpServerInstanceQ * mainClass) :
         pMainClass {mainClass}
     {
         if (nullptr == pMainClass)
         {
             throw std::invalid_argument("Cannot work without main class");
         }
-        threadRemover = new std::thread(&Network::UdpServerInstanceQ::Impl::threadRemoverLoop, this);
+        threadRemover = new std::thread(&Utility::Network::UdpServerInstanceQ::Impl::threadRemoverLoop, this);
     }
 
     Exchange::Packet getMessage()
@@ -120,7 +120,7 @@ struct Network::UdpServerInstanceQ::Impl
     }
 };
 
-Network::UdpServerInstanceQ::UdpServerInstanceQ(const uint16_t threadCount, QObject * parent) :
+Utility::Network::UdpServerInstanceQ::UdpServerInstanceQ(const uint16_t threadCount, QObject * parent) :
     QObject(parent),
     d {new Impl(this)}
 {
@@ -136,23 +136,23 @@ Network::UdpServerInstanceQ::UdpServerInstanceQ(const uint16_t threadCount, QObj
     }
 }
 
-Network::UdpServerInstanceQ::~UdpServerInstanceQ()
+Utility::Network::UdpServerInstanceQ::~UdpServerInstanceQ()
 {
     stop();
 }
 
-bool Network::UdpServerInstanceQ::start()
+bool Utility::Network::UdpServerInstanceQ::start()
 {
-    connect(d->m_socket, &QUdpSocket::readyRead, this, &Network::UdpServerInstanceQ::onMessage);
+    connect(d->m_socket, &QUdpSocket::readyRead, this, &Utility::Network::UdpServerInstanceQ::onMessage);
     return d->m_socket->bind(QHostAddress::AnyIPv4, UDP_SERVER_PORT);
 }
 
-bool Network::UdpServerInstanceQ::isRunning() const
+bool Utility::Network::UdpServerInstanceQ::isRunning() const
 {
     return (d->m_socket->state() == QUdpSocket::ListeningState);
 }
 
-void Network::UdpServerInstanceQ::stop()
+void Utility::Network::UdpServerInstanceQ::stop()
 {
     if (d->done)
     {
@@ -166,11 +166,11 @@ void Network::UdpServerInstanceQ::stop()
 
     d->m_socket->close();
 
-    disconnect(d->m_socket, &QUdpSocket::readyRead, this, &Network::UdpServerInstanceQ::onMessage);
+    disconnect(d->m_socket, &QUdpSocket::readyRead, this, &Utility::Network::UdpServerInstanceQ::onMessage);
     delete d->m_socket;
 }
 
-void Network::UdpServerInstanceQ::onMessage()
+void Utility::Network::UdpServerInstanceQ::onMessage()
 {
     QNetworkDatagram message;
     int threadNum = -1;
@@ -195,6 +195,6 @@ void Network::UdpServerInstanceQ::onMessage()
             return;
         d->threadInputs[threadNum] = message.data();
 
-//        *pThread = new std::thread(&Network::UdpServerInstanceQ::Impl::processThreadLoop, this, threadNum, message.senderAddress(), message.senderPort());
+//        *pThread = new std::thread(&Utility::Network::UdpServerInstanceQ::Impl::processThreadLoop, this, threadNum, message.senderAddress(), message.senderPort());
     }
 }
