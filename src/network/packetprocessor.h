@@ -7,7 +7,11 @@
 
 #include "exchangepacket.h"
 
+<<<<<<< HEAD
 namespace Network {
+=======
+namespace Utility::Network {
+>>>>>>> master
 
 class PacketProcessor : public QObject
 {

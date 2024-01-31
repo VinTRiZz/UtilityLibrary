@@ -10,7 +10,11 @@
 #include <QObject>
 #endif // QT_CORE_LIB
 
+<<<<<<< HEAD
 namespace Network
+=======
+namespace Utility::Network
+>>>>>>> master
 {
 
 #ifdef QT_NETWORK_LIB

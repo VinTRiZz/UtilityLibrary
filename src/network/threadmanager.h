@@ -9,7 +9,11 @@
 
 #include <functional>
 
+<<<<<<< HEAD
 namespace Network
+=======
+namespace Utility::Network
+>>>>>>> master
 {
 class ThreadManager final : public QObject
 {

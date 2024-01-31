@@ -8,7 +8,11 @@
 
 class DatabaseLoader;
 
+<<<<<<< HEAD
 namespace Network
+=======
+namespace Utility::Network
+>>>>>>> master
 {
     class ConnectionWorker : public QObject
     {

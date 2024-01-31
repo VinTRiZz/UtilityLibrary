@@ -1,0 +1,2 @@
+#include "../../src/process/processobserver.h"
+#include "../../src/process/etc.h"
