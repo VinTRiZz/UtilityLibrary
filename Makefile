@@ -66,7 +66,9 @@ SOURCES       = src/extendedtypes.cpp \
 		src/process/processobserver.cpp \
 		src/process/worker.cpp \
 		src/qt_widgets/drawwidget.cpp \
-		src/qt_widgets/figures.cpp BUILD/moc_connectionworker.cpp \
+		src/qt_widgets/figures.cpp \
+		src/qt_widgets/treeitem.cpp \
+		src/qt_widgets/treeitemmodel.cpp BUILD/moc_connectionworker.cpp \
 		BUILD/moc_packetprocessor.cpp \
 		BUILD/moc_tcpclientinstance.cpp \
 		BUILD/moc_threadmanager.cpp \
@@ -91,6 +93,8 @@ OBJECTS       = BUILD/extendedtypes.o \
 		BUILD/worker.o \
 		BUILD/drawwidget.o \
 		BUILD/figures.o \
+		BUILD/treeitem.o \
+		BUILD/treeitemmodel.o \
 		BUILD/moc_connectionworker.o \
 		BUILD/moc_packetprocessor.o \
 		BUILD/moc_tcpclientinstance.o \
@@ -199,7 +203,9 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		src/process/processobserver.h \
 		src/process/worker.h \
 		src/qt_widgets/drawwidget.h \
-		src/qt_widgets/figures.h src/extendedtypes.cpp \
+		src/qt_widgets/figures.h \
+		src/qt_widgets/treeitem.h \
+		src/qt_widgets/treeitemmodel.h src/extendedtypes.cpp \
 		src/generators.cpp \
 		src/main_utils.cpp \
 		src/point.cpp \
@@ -215,7 +221,9 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		src/process/processobserver.cpp \
 		src/process/worker.cpp \
 		src/qt_widgets/drawwidget.cpp \
-		src/qt_widgets/figures.cpp
+		src/qt_widgets/figures.cpp \
+		src/qt_widgets/treeitem.cpp \
+		src/qt_widgets/treeitemmodel.cpp
 QMAKE_TARGET  = UtilityLibrary
 DESTDIR       = BIN/
 TARGET        = libUtilityLibrary.so.1.0.0
@@ -445,8 +453,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents src/extendedtypes.h src/generators.h src/main_utils.h src/point.h src/network/connectionworker.h src/network/exchangepacket.h src/network/packetprocessor.h src/network/tcpclientinstance.h src/network/tcpserverinstance.h src/network/threadmanager.h src/network/udpclientinstance.h src/network/udpserverinstance.h src/process/configworker.h src/process/etc.h src/process/processobserver.h src/process/worker.h src/qt_widgets/drawwidget.h src/qt_widgets/figures.h $(DISTDIR)/
-	$(COPY_FILE) --parents src/extendedtypes.cpp src/generators.cpp src/main_utils.cpp src/point.cpp src/network/connectionworker.cpp src/network/packetprocessor.cpp src/network/tcpclientinstance.cpp src/network/tcpserverinstance.cpp src/network/threadmanager.cpp src/network/udpclientinstance.cpp src/network/udpserverinstance.cpp src/process/configworker.cpp src/process/etc.cpp src/process/processobserver.cpp src/process/worker.cpp src/qt_widgets/drawwidget.cpp src/qt_widgets/figures.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents src/extendedtypes.h src/generators.h src/main_utils.h src/point.h src/network/connectionworker.h src/network/exchangepacket.h src/network/packetprocessor.h src/network/tcpclientinstance.h src/network/tcpserverinstance.h src/network/threadmanager.h src/network/udpclientinstance.h src/network/udpserverinstance.h src/process/configworker.h src/process/etc.h src/process/processobserver.h src/process/worker.h src/qt_widgets/drawwidget.h src/qt_widgets/figures.h src/qt_widgets/treeitem.h src/qt_widgets/treeitemmodel.h $(DISTDIR)/
+	$(COPY_FILE) --parents src/extendedtypes.cpp src/generators.cpp src/main_utils.cpp src/point.cpp src/network/connectionworker.cpp src/network/packetprocessor.cpp src/network/tcpclientinstance.cpp src/network/tcpserverinstance.cpp src/network/threadmanager.cpp src/network/udpclientinstance.cpp src/network/udpserverinstance.cpp src/process/configworker.cpp src/process/etc.cpp src/process/processobserver.cpp src/process/worker.cpp src/qt_widgets/drawwidget.cpp src/qt_widgets/figures.cpp src/qt_widgets/treeitem.cpp src/qt_widgets/treeitemmodel.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -528,6 +536,8 @@ BUILD/moc_worker.cpp: src/process/configworker.h \
 	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/lazarev_as/Projects/Qt/UtilityLibrary/BUILD/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/lazarev_as/Projects/Qt/UtilityLibrary -I/home/lazarev_as/Projects/Qt/UtilityLibrary/src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/6 -I/usr/include/x86_64-linux-gnu/c++/6 -I/usr/include/c++/6/backward -I/usr/lib/gcc/x86_64-linux-gnu/6/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/6/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include src/process/worker.h -o BUILD/moc_worker.cpp
 
 BUILD/moc_drawwidget.cpp: src/qt_widgets/figures.h \
+		src/point.h \
+		src/main_utils.h \
 		src/qt_widgets/drawwidget.h \
 		BUILD/moc_predefs.h \
 		/usr/lib/qt5/bin/moc
@@ -612,11 +622,22 @@ BUILD/worker.o: src/process/worker.cpp src/process/worker.h \
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/worker.o src/process/worker.cpp
 
 BUILD/drawwidget.o: src/qt_widgets/drawwidget.cpp src/qt_widgets/drawwidget.h \
-		src/qt_widgets/figures.h
+		src/qt_widgets/figures.h \
+		src/point.h \
+		src/main_utils.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/drawwidget.o src/qt_widgets/drawwidget.cpp
 
-BUILD/figures.o: src/qt_widgets/figures.cpp src/qt_widgets/figures.h
+BUILD/figures.o: src/qt_widgets/figures.cpp src/qt_widgets/figures.h \
+		src/point.h \
+		src/main_utils.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/figures.o src/qt_widgets/figures.cpp
+
+BUILD/treeitem.o: src/qt_widgets/treeitem.cpp src/qt_widgets/treeitem.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/treeitem.o src/qt_widgets/treeitem.cpp
+
+BUILD/treeitemmodel.o: src/qt_widgets/treeitemmodel.cpp src/qt_widgets/treeitemmodel.h \
+		src/qt_widgets/treeitem.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/treeitemmodel.o src/qt_widgets/treeitemmodel.cpp
 
 BUILD/moc_connectionworker.o: BUILD/moc_connectionworker.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/moc_connectionworker.o BUILD/moc_connectionworker.cpp
