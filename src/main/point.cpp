@@ -357,7 +357,7 @@ std::pair<Point, Point> Utility::convertRectFromString(const std::string &rectSt
 std::string Utility::convertRectToStringQ(const QRectF & rect, const uint strSize, const char rectDelim, const char pointDelim)
 {
     std::string result;
-    Point p1(rect.bottom(), rect.left()), p2(rect.top(), rect.right());
+    Point p1(rect.left(), rect.bottom()), p2(rect.right(), rect.top());
     result += p1.str(strSize, pointDelim);
     result += rectDelim;
     result += p2.str(strSize, pointDelim);
@@ -367,6 +367,6 @@ std::string Utility::convertRectToStringQ(const QRectF & rect, const uint strSiz
 QRectF Utility::convertRectFromStringQ(const std::string &rectStr, const char rectDelim, const char pointDelim)
 {
     auto rectPair = convertRectFromString(rectStr, rectDelim, pointDelim);
-    return QRectF(rectPair.first.x, rectPair.second.y, rectPair.second.x - rectPair.first.x, rectPair.second.y - rectPair.first.y);
+    return QRectF(rectPair.second.x, rectPair.first.y, rectPair.first.x - rectPair.second.x, rectPair.second.y - rectPair.first.y);
 }
 #endif // QT_CORE_LIB

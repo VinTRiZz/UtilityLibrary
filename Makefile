@@ -51,6 +51,7 @@ OBJECTS_DIR   = BUILD/
 ####### Files
 
 SOURCES       = src/main/extendedtypes.cpp \
+		src/main/filedatacompositor.cpp \
 		src/main/generators.cpp \
 		src/main/main_utils.cpp \
 		src/main/point.cpp \
@@ -77,6 +78,7 @@ SOURCES       = src/main/extendedtypes.cpp \
 		BUILD/moc_worker.cpp \
 		BUILD/moc_drawwidget.cpp
 OBJECTS       = BUILD/extendedtypes.o \
+		BUILD/filedatacompositor.o \
 		BUILD/generators.o \
 		BUILD/main_utils.o \
 		BUILD/point.o \
@@ -187,6 +189,7 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/yacc.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
 		UtilityLibrary.pro src/main/extendedtypes.h \
+		src/main/filedatacompositor.h \
 		src/main/generators.h \
 		src/main/main_utils.h \
 		src/main/point.h \
@@ -206,6 +209,7 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		src/qt_widgets/figures.h \
 		src/qt_widgets/treeitem.h \
 		src/qt_widgets/treeitemmodel.h src/main/extendedtypes.cpp \
+		src/main/filedatacompositor.cpp \
 		src/main/generators.cpp \
 		src/main/main_utils.cpp \
 		src/main/point.cpp \
@@ -453,8 +457,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents src/main/extendedtypes.h src/main/generators.h src/main/main_utils.h src/main/point.h src/network/connectionworker.h src/network/exchangepacket.h src/network/packetprocessor.h src/network/tcpclientinstance.h src/network/tcpserverinstance.h src/network/threadmanager.h src/network/udpclientinstance.h src/network/udpserverinstance.h src/process/configworker.h src/process/etc.h src/process/processobserver.h src/process/worker.h src/qt_widgets/drawwidget.h src/qt_widgets/figures.h src/qt_widgets/treeitem.h src/qt_widgets/treeitemmodel.h $(DISTDIR)/
-	$(COPY_FILE) --parents src/main/extendedtypes.cpp src/main/generators.cpp src/main/main_utils.cpp src/main/point.cpp src/network/connectionworker.cpp src/network/packetprocessor.cpp src/network/tcpclientinstance.cpp src/network/tcpserverinstance.cpp src/network/threadmanager.cpp src/network/udpclientinstance.cpp src/network/udpserverinstance.cpp src/process/configworker.cpp src/process/etc.cpp src/process/processobserver.cpp src/process/worker.cpp src/qt_widgets/drawwidget.cpp src/qt_widgets/figures.cpp src/qt_widgets/treeitem.cpp src/qt_widgets/treeitemmodel.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents src/main/extendedtypes.h src/main/filedatacompositor.h src/main/generators.h src/main/main_utils.h src/main/point.h src/network/connectionworker.h src/network/exchangepacket.h src/network/packetprocessor.h src/network/tcpclientinstance.h src/network/tcpserverinstance.h src/network/threadmanager.h src/network/udpclientinstance.h src/network/udpserverinstance.h src/process/configworker.h src/process/etc.h src/process/processobserver.h src/process/worker.h src/qt_widgets/drawwidget.h src/qt_widgets/figures.h src/qt_widgets/treeitem.h src/qt_widgets/treeitemmodel.h $(DISTDIR)/
+	$(COPY_FILE) --parents src/main/extendedtypes.cpp src/main/filedatacompositor.cpp src/main/generators.cpp src/main/main_utils.cpp src/main/point.cpp src/network/connectionworker.cpp src/network/packetprocessor.cpp src/network/tcpclientinstance.cpp src/network/tcpserverinstance.cpp src/network/threadmanager.cpp src/network/udpclientinstance.cpp src/network/udpserverinstance.cpp src/process/configworker.cpp src/process/etc.cpp src/process/processobserver.cpp src/process/worker.cpp src/qt_widgets/drawwidget.cpp src/qt_widgets/figures.cpp src/qt_widgets/treeitem.cpp src/qt_widgets/treeitemmodel.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -561,6 +565,9 @@ compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean
 
 BUILD/extendedtypes.o: src/main/extendedtypes.cpp src/main/extendedtypes.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/extendedtypes.o src/main/extendedtypes.cpp
+
+BUILD/filedatacompositor.o: src/main/filedatacompositor.cpp src/main/filedatacompositor.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/filedatacompositor.o src/main/filedatacompositor.cpp
 
 BUILD/generators.o: src/main/generators.cpp src/main/generators.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/generators.o src/main/generators.cpp
