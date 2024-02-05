@@ -29,6 +29,7 @@ public:
     bool encryptAES(const std::string & input, std::string & output);
     bool decryptAES(const std::string & input, std::string & output);
 
+
     // ----------------------------------------------------------------------- //
     // ----------------------- RSA Encrypt methods --------------------------- //
     // ----------------------------------------------------------------------- //
@@ -44,16 +45,14 @@ public:
     bool encryptFileRSA(const std::string & inputPath, const std::string & outputPath);
     bool decryptFileRSA(const std::string & inputPath, const std::string & outputPath);
 
-    /**
-     * @brief errorText Get string with OpenSSL error text
-     * @return error text string
-     */
-    std::string errorText() const;
+    // ----------------------------------------------------------------------- //
+    // --------------------- ChaCha20 Encrypt methods ------------------------ //
+    // ----------------------------------------------------------------------- //
+    void setKeyChaCha20(const std::string keyString);
+    bool encryptChaCha20(const std::string & plaintext, const std::string & iv, std::string & encryptedText);
+    bool decryptChaCha20(const std::string & encryptedText, const std::string & iv, std::string & decryptedText);
 
-    /**
-     * @brief encryptMethod Get current class encryption method. To set other method, call @ref init()
-     * @return
-     */
+    std::string errorText() const;
     ENCRYPTION_METHOD encryptMethod() const;
 
 protected:

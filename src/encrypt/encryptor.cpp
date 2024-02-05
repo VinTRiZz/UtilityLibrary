@@ -7,6 +7,13 @@
 // RSA
 #include <openssl/rsa.h>
 
+// ChaCha20
+// #define ENCRYPTION_CHA_CHA_20
+
+#ifdef ENCRYPTION_CHA_CHA_20
+#include <sodium.h>
+#endif // ENCRYPTION_CHA_CHA_20
+
 #include <fstream>
 #include <string.h>
 #include <vector>
@@ -428,6 +435,71 @@ bool Encryption::Encryptor::decryptFileRSA(const std::string &inputPath, const s
     inputFile.close();
     outputFile.close();
     return true;
+}
+
+bool Encryption::Encryptor::encryptChaCha20(const std::string &plaintext, const std::string &iv, std::string &encryptedText)
+{
+#ifdef ENCRYPTION_CHA_CHA_20
+    if (key.size() != crypto_stream_chacha20_KEYBYTES)
+    {
+        d->m_errorText = "Invalid encryption key size";
+        return false;
+    }
+    if (iv.size() != crypto_stream_chacha20_NONCEBYTES)
+    {
+        d->m_errorText = "Invalid init vector size";
+        return false;
+    }
+
+    encryptedText.resize(plaintext.size());
+    if (crypto_stream_chacha20_xor((unsigned char*)encryptedText.data(),
+                                   (const unsigned char*)plaintext.data(),
+                                   plaintext.size(),
+                                   (const unsigned char*)iv.data(),
+                                   (const unsigned char*)m_config.encryptionKey.data()) != 0)
+    {
+        d->m_errorText = "Error encrypting"; // TODO: Write correctly getting error text
+        return false;
+    }
+
+    return true;
+#else
+    encryptedText = iv + plaintext; // To avoid warnings
+    d->m_errorText = "Libsodium not installed, encryption not provided";
+    return false;
+#endif // ENCRYPTION_CHA_CHA_20
+}
+
+bool Encryption::Encryptor::decryptChaCha20(const std::string &encryptedText, const std::string &iv, std::string &decryptedText)
+{
+#ifdef ENCRYPTION_CHA_CHA_20
+    if (key.size() != crypto_stream_chacha20_KEYBYTES)
+    {
+        d->m_errorText = "Invalid encryption key size";
+        return false;
+    }
+    if (iv.size() != crypto_stream_chacha20_NONCEBYTES)
+    {
+        d->m_errorText = "Invalid init vector size";
+        return false;
+    }
+
+    decryptedText.resize(encryptedText.size());
+    if (crypto_stream_chacha20_xor((unsigned char*)decryptedText.data(),
+                                   (const unsigned char*)encryptedText.data(),
+                                   encryptedText.size(),
+                                   (const unsigned char*)iv.data(),
+                                   (const unsigned char*)m_config.encryptionKey.data()) != 0)
+    {
+        d->m_errorText = "Error encrypting"; // TODO: Write correctly getting error text
+        return false;
+    }
+    return true;
+#else
+    decryptedText = iv + encryptedText; // To avoid warnings
+    d->m_errorText = "Libsodium not installed, encryption not provided";
+    return false;
+#endif // ENCRYPTION_CHA_CHA_20
 }
 
 std::string Encryption::Encryptor::errorText() const
