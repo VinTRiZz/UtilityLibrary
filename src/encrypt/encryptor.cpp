@@ -8,7 +8,7 @@
 #include <openssl/rsa.h>
 
 // ChaCha20
-// #define ENCRYPTION_CHA_CHA_20
+// #define ENCRYPTION_CHA_CHA_20 // TODO: Add Libsodium define detection
 
 #ifdef ENCRYPTION_CHA_CHA_20
 #include <sodium.h>
@@ -286,10 +286,9 @@ std::string Encryption::Encryptor::pubKeyRSA() const
     return d->rsa_public_key_to_string();
 }
 
-void Encryption::Encryptor::setKeyPairRSA(const std::string &pubKeyFile, const std::string &privKeyFile)
+bool Encryption::Encryptor::setKeyPairRSA(const std::string &pubKeyFile, const std::string &privKeyFile)
 {
-    d->rsa_load_public_key(pubKeyFile);
-    d->rsa_load_private_key(privKeyFile);
+    return (d->rsa_load_public_key(pubKeyFile) && d->rsa_load_private_key(privKeyFile));
 }
 
 bool Encryption::Encryptor::createKeyPairRSA(const std::string &pubKeyFile, const std::string &privKeyFile)
