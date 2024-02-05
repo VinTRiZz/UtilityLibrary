@@ -46,6 +46,7 @@ public:
     std::string headerEndLabel() const;
 
     // Writes string as header, replacing with value key text %KEY_STRING% and value data text %VALUE_STRING% in template
+    // Tries
     void setDataTemplate(const std::string & dataTemplate = "KEY: [ %KEY_STRING% ] VALUE: [ %VALUE_STRING% ]");
 
     // If zero, then new line. Separates key-value pairs
@@ -74,6 +75,9 @@ public:
 private:
     struct Impl;
     std::unique_ptr<Impl> d;
+
+    bool openFile();
+    void closeFIle();
 };
 
 }
