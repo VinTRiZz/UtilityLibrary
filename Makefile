@@ -75,7 +75,8 @@ SOURCES       = src/main/extendedtypes.cpp \
 		src/qt_widgets/treeitem.cpp \
 		src/qt_widgets/treeitemmodel.cpp \
 		src/encrypt/encryptor.cpp \
-		src/IPC/msgqueue.cpp BUILD/moc_connectionworker.cpp \
+		src/IPC/msgqueue.cpp \
+		src/USB/usbdevhandler.cpp BUILD/moc_connectionworker.cpp \
 		BUILD/moc_packetprocessor.cpp \
 		BUILD/moc_tcpclientinstance.cpp \
 		BUILD/moc_threadmanager.cpp \
@@ -109,6 +110,7 @@ OBJECTS       = BUILD/extendedtypes.o \
 		BUILD/treeitemmodel.o \
 		BUILD/encryptor.o \
 		BUILD/msgqueue.o \
+		BUILD/usbdevhandler.o \
 		BUILD/moc_connectionworker.o \
 		BUILD/moc_packetprocessor.o \
 		BUILD/moc_tcpclientinstance.o \
@@ -227,7 +229,8 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		src/qt_widgets/treeitem.h \
 		src/qt_widgets/treeitemmodel.h \
 		src/encrypt/encryptor.h \
-		src/IPC/msgqueue.h src/main/extendedtypes.cpp \
+		src/IPC/msgqueue.h \
+		src/USB/usbdevhandler.h src/main/extendedtypes.cpp \
 		src/main/filedatacompositor.cpp \
 		src/main/generators.cpp \
 		src/main/hasher.cpp \
@@ -252,7 +255,8 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		src/qt_widgets/treeitem.cpp \
 		src/qt_widgets/treeitemmodel.cpp \
 		src/encrypt/encryptor.cpp \
-		src/IPC/msgqueue.cpp
+		src/IPC/msgqueue.cpp \
+		src/USB/usbdevhandler.cpp
 QMAKE_TARGET  = UtilityLibrary
 DESTDIR       = BIN/
 TARGET        = libUtilityLibrary.so.1.0.0
@@ -482,8 +486,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents src/main/extendedtypes.h src/main/filedatacompositor.h src/main/generators.h src/main/hasher.h src/main/main_utils.h src/main/point.h src/network/connectionworker.h src/network/databasehandler.h src/network/exchangepacket.h src/network/packetprocessor.h src/network/tcpclientinstance.h src/network/tcpserverinstance.h src/network/threadmanager.h src/network/udpclientinstance.h src/network/udpserverinstance.h src/process/configworker.h src/process/etc.h src/process/processclass.h src/process/processinvoker.h src/process/processobserver.h src/process/stringlist.h src/process/worker.h src/qt_widgets/drawwidget.h src/qt_widgets/figures.h src/qt_widgets/treeitem.h src/qt_widgets/treeitemmodel.h src/encrypt/encryptor.h src/IPC/msgqueue.h $(DISTDIR)/
-	$(COPY_FILE) --parents src/main/extendedtypes.cpp src/main/filedatacompositor.cpp src/main/generators.cpp src/main/hasher.cpp src/main/main_utils.cpp src/main/point.cpp src/network/connectionworker.cpp src/network/databasehandler.cpp src/network/packetprocessor.cpp src/network/tcpclientinstance.cpp src/network/tcpserverinstance.cpp src/network/threadmanager.cpp src/network/udpclientinstance.cpp src/network/udpserverinstance.cpp src/process/configworker.cpp src/process/etc.cpp src/process/processclass.cpp src/process/processinvoker.cpp src/process/processobserver.cpp src/process/worker.cpp src/qt_widgets/drawwidget.cpp src/qt_widgets/figures.cpp src/qt_widgets/treeitem.cpp src/qt_widgets/treeitemmodel.cpp src/encrypt/encryptor.cpp src/IPC/msgqueue.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents src/main/extendedtypes.h src/main/filedatacompositor.h src/main/generators.h src/main/hasher.h src/main/main_utils.h src/main/point.h src/network/connectionworker.h src/network/databasehandler.h src/network/exchangepacket.h src/network/packetprocessor.h src/network/tcpclientinstance.h src/network/tcpserverinstance.h src/network/threadmanager.h src/network/udpclientinstance.h src/network/udpserverinstance.h src/process/configworker.h src/process/etc.h src/process/processclass.h src/process/processinvoker.h src/process/processobserver.h src/process/stringlist.h src/process/worker.h src/qt_widgets/drawwidget.h src/qt_widgets/figures.h src/qt_widgets/treeitem.h src/qt_widgets/treeitemmodel.h src/encrypt/encryptor.h src/IPC/msgqueue.h src/USB/usbdevhandler.h $(DISTDIR)/
+	$(COPY_FILE) --parents src/main/extendedtypes.cpp src/main/filedatacompositor.cpp src/main/generators.cpp src/main/hasher.cpp src/main/main_utils.cpp src/main/point.cpp src/network/connectionworker.cpp src/network/databasehandler.cpp src/network/packetprocessor.cpp src/network/tcpclientinstance.cpp src/network/tcpserverinstance.cpp src/network/threadmanager.cpp src/network/udpclientinstance.cpp src/network/udpserverinstance.cpp src/process/configworker.cpp src/process/etc.cpp src/process/processclass.cpp src/process/processinvoker.cpp src/process/processobserver.cpp src/process/worker.cpp src/qt_widgets/drawwidget.cpp src/qt_widgets/figures.cpp src/qt_widgets/treeitem.cpp src/qt_widgets/treeitemmodel.cpp src/encrypt/encryptor.cpp src/IPC/msgqueue.cpp src/USB/usbdevhandler.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -692,6 +696,9 @@ BUILD/encryptor.o: src/encrypt/encryptor.cpp src/encrypt/encryptor.h
 
 BUILD/msgqueue.o: src/IPC/msgqueue.cpp src/IPC/msgqueue.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/msgqueue.o src/IPC/msgqueue.cpp
+
+BUILD/usbdevhandler.o: src/USB/usbdevhandler.cpp src/USB/usbdevhandler.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/usbdevhandler.o src/USB/usbdevhandler.cpp
 
 BUILD/moc_connectionworker.o: BUILD/moc_connectionworker.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/moc_connectionworker.o BUILD/moc_connectionworker.cpp
