@@ -1,7 +1,7 @@
 #ifndef MSGQUEUE_H
 #define MSGQUEUE_H
 
-#warning "Need to rewrite Message queue"
+#warning "Need refactor"
 
 #ifdef REWRITE_THIS_SHIT
 

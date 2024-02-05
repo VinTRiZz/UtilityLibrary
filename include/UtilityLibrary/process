@@ -1,2 +1,3 @@
 #include "../../src/process/processobserver.h"
+#include "../../src/process/processinvoker.h"
 #include "../../src/process/etc.h"

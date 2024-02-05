@@ -4,6 +4,8 @@
 #include <memory>
 #include <QVector>
 
+#warning "Need refactor"
+
 namespace ProcessWatcher
 {
 

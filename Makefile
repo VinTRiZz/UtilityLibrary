@@ -64,13 +64,16 @@ SOURCES       = src/main/extendedtypes.cpp \
 		src/network/udpserverinstance.cpp \
 		src/process/configworker.cpp \
 		src/process/etc.cpp \
+		src/process/processclass.cpp \
+		src/process/processinvoker.cpp \
 		src/process/processobserver.cpp \
 		src/process/worker.cpp \
 		src/qt_widgets/drawwidget.cpp \
 		src/qt_widgets/figures.cpp \
 		src/qt_widgets/treeitem.cpp \
 		src/qt_widgets/treeitemmodel.cpp \
-		src/encrypt/encryptor.cpp BUILD/moc_connectionworker.cpp \
+		src/encrypt/encryptor.cpp \
+		src/IPC/msgqueue.cpp BUILD/moc_connectionworker.cpp \
 		BUILD/moc_packetprocessor.cpp \
 		BUILD/moc_tcpclientinstance.cpp \
 		BUILD/moc_threadmanager.cpp \
@@ -92,6 +95,8 @@ OBJECTS       = BUILD/extendedtypes.o \
 		BUILD/udpserverinstance.o \
 		BUILD/configworker.o \
 		BUILD/etc.o \
+		BUILD/processclass.o \
+		BUILD/processinvoker.o \
 		BUILD/processobserver.o \
 		BUILD/worker.o \
 		BUILD/drawwidget.o \
@@ -99,6 +104,7 @@ OBJECTS       = BUILD/extendedtypes.o \
 		BUILD/treeitem.o \
 		BUILD/treeitemmodel.o \
 		BUILD/encryptor.o \
+		BUILD/msgqueue.o \
 		BUILD/moc_connectionworker.o \
 		BUILD/moc_packetprocessor.o \
 		BUILD/moc_tcpclientinstance.o \
@@ -205,13 +211,17 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		src/network/udpserverinstance.h \
 		src/process/configworker.h \
 		src/process/etc.h \
+		src/process/processclass.h \
+		src/process/processinvoker.h \
 		src/process/processobserver.h \
+		src/process/stringlist.h \
 		src/process/worker.h \
 		src/qt_widgets/drawwidget.h \
 		src/qt_widgets/figures.h \
 		src/qt_widgets/treeitem.h \
 		src/qt_widgets/treeitemmodel.h \
-		src/encrypt/encryptor.h src/main/extendedtypes.cpp \
+		src/encrypt/encryptor.h \
+		src/IPC/msgqueue.h src/main/extendedtypes.cpp \
 		src/main/filedatacompositor.cpp \
 		src/main/generators.cpp \
 		src/main/main_utils.cpp \
@@ -225,13 +235,16 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		src/network/udpserverinstance.cpp \
 		src/process/configworker.cpp \
 		src/process/etc.cpp \
+		src/process/processclass.cpp \
+		src/process/processinvoker.cpp \
 		src/process/processobserver.cpp \
 		src/process/worker.cpp \
 		src/qt_widgets/drawwidget.cpp \
 		src/qt_widgets/figures.cpp \
 		src/qt_widgets/treeitem.cpp \
 		src/qt_widgets/treeitemmodel.cpp \
-		src/encrypt/encryptor.cpp
+		src/encrypt/encryptor.cpp \
+		src/IPC/msgqueue.cpp
 QMAKE_TARGET  = UtilityLibrary
 DESTDIR       = BIN/
 TARGET        = libUtilityLibrary.so.1.0.0
@@ -461,8 +474,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents src/main/extendedtypes.h src/main/filedatacompositor.h src/main/generators.h src/main/main_utils.h src/main/point.h src/network/connectionworker.h src/network/exchangepacket.h src/network/packetprocessor.h src/network/tcpclientinstance.h src/network/tcpserverinstance.h src/network/threadmanager.h src/network/udpclientinstance.h src/network/udpserverinstance.h src/process/configworker.h src/process/etc.h src/process/processobserver.h src/process/worker.h src/qt_widgets/drawwidget.h src/qt_widgets/figures.h src/qt_widgets/treeitem.h src/qt_widgets/treeitemmodel.h src/encrypt/encryptor.h $(DISTDIR)/
-	$(COPY_FILE) --parents src/main/extendedtypes.cpp src/main/filedatacompositor.cpp src/main/generators.cpp src/main/main_utils.cpp src/main/point.cpp src/network/connectionworker.cpp src/network/packetprocessor.cpp src/network/tcpclientinstance.cpp src/network/tcpserverinstance.cpp src/network/threadmanager.cpp src/network/udpclientinstance.cpp src/network/udpserverinstance.cpp src/process/configworker.cpp src/process/etc.cpp src/process/processobserver.cpp src/process/worker.cpp src/qt_widgets/drawwidget.cpp src/qt_widgets/figures.cpp src/qt_widgets/treeitem.cpp src/qt_widgets/treeitemmodel.cpp src/encrypt/encryptor.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents src/main/extendedtypes.h src/main/filedatacompositor.h src/main/generators.h src/main/main_utils.h src/main/point.h src/network/connectionworker.h src/network/exchangepacket.h src/network/packetprocessor.h src/network/tcpclientinstance.h src/network/tcpserverinstance.h src/network/threadmanager.h src/network/udpclientinstance.h src/network/udpserverinstance.h src/process/configworker.h src/process/etc.h src/process/processclass.h src/process/processinvoker.h src/process/processobserver.h src/process/stringlist.h src/process/worker.h src/qt_widgets/drawwidget.h src/qt_widgets/figures.h src/qt_widgets/treeitem.h src/qt_widgets/treeitemmodel.h src/encrypt/encryptor.h src/IPC/msgqueue.h $(DISTDIR)/
+	$(COPY_FILE) --parents src/main/extendedtypes.cpp src/main/filedatacompositor.cpp src/main/generators.cpp src/main/main_utils.cpp src/main/point.cpp src/network/connectionworker.cpp src/network/packetprocessor.cpp src/network/tcpclientinstance.cpp src/network/tcpserverinstance.cpp src/network/threadmanager.cpp src/network/udpclientinstance.cpp src/network/udpserverinstance.cpp src/process/configworker.cpp src/process/etc.cpp src/process/processclass.cpp src/process/processinvoker.cpp src/process/processobserver.cpp src/process/worker.cpp src/qt_widgets/drawwidget.cpp src/qt_widgets/figures.cpp src/qt_widgets/treeitem.cpp src/qt_widgets/treeitemmodel.cpp src/encrypt/encryptor.cpp src/IPC/msgqueue.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -624,6 +637,14 @@ BUILD/configworker.o: src/process/configworker.cpp src/process/configworker.h
 BUILD/etc.o: src/process/etc.cpp src/process/etc.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/etc.o src/process/etc.cpp
 
+BUILD/processclass.o: src/process/processclass.cpp src/process/processclass.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/processclass.o src/process/processclass.cpp
+
+BUILD/processinvoker.o: src/process/processinvoker.cpp src/process/processinvoker.h \
+		src/process/processclass.h \
+		src/process/stringlist.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/processinvoker.o src/process/processinvoker.cpp
+
 BUILD/processobserver.o: src/process/processobserver.cpp src/process/processobserver.h \
 		src/process/configworker.h \
 		src/process/worker.h
@@ -653,6 +674,9 @@ BUILD/treeitemmodel.o: src/qt_widgets/treeitemmodel.cpp src/qt_widgets/treeitemm
 
 BUILD/encryptor.o: src/encrypt/encryptor.cpp src/encrypt/encryptor.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/encryptor.o src/encrypt/encryptor.cpp
+
+BUILD/msgqueue.o: src/IPC/msgqueue.cpp src/IPC/msgqueue.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/msgqueue.o src/IPC/msgqueue.cpp
 
 BUILD/moc_connectionworker.o: BUILD/moc_connectionworker.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/moc_connectionworker.o BUILD/moc_connectionworker.cpp
