@@ -120,3 +120,14 @@ bool Utility::loadDataQ(QFile *f, QString &dataBuf)
     return true;
 }
 #endif // QT_CORE_LIB
+
+void console_gotoxy(int x, int y)
+{
+#ifdef __linux__
+    printf("%c[%d;%df",0x1B,y,x);
+#else
+    HANDLE hc = GetStdHandle(STD_OUTPUT_HANDLE);  // get console handle
+    COORD cursor = { x, y };
+    SetConsoleCursorPosition(hc, cursor);  // set new cursor position
+#endif // __linux__
+}

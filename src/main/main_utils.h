@@ -15,6 +15,10 @@ class QFile;
 namespace Utility
 {
 
+void console_gotoxy(int x,int y);
+
+
+
 // Etc functions
 uint factorial(long n);
 

@@ -38,7 +38,7 @@ DISTNAME      = UtilityLibrary1.0.0
 DISTDIR = /home/lazarev_as/Projects/Qt/UtilityLibrary/BUILD/UtilityLibrary1.0.0
 LINK          = g++
 LFLAGS        = -shared -Wl,-soname,libUtilityLibrary.so.1
-LIBS          = $(SUBLIBS) -lcrypto -lQt5Widgets -lQt5Gui -lQt5Network -lQt5Core -lGL -lpthread 
+LIBS          = $(SUBLIBS) -lcrypto -lsqlite3 -lQt5Widgets -lQt5Gui -lQt5Network -lQt5Core -lGL -lpthread 
 AR            = ar cqs
 RANLIB        = 
 SED           = sed
@@ -53,9 +53,11 @@ OBJECTS_DIR   = BUILD/
 SOURCES       = src/main/extendedtypes.cpp \
 		src/main/filedatacompositor.cpp \
 		src/main/generators.cpp \
+		src/main/hasher.cpp \
 		src/main/main_utils.cpp \
 		src/main/point.cpp \
 		src/network/connectionworker.cpp \
+		src/network/databasehandler.cpp \
 		src/network/packetprocessor.cpp \
 		src/network/tcpclientinstance.cpp \
 		src/network/tcpserverinstance.cpp \
@@ -84,9 +86,11 @@ SOURCES       = src/main/extendedtypes.cpp \
 OBJECTS       = BUILD/extendedtypes.o \
 		BUILD/filedatacompositor.o \
 		BUILD/generators.o \
+		BUILD/hasher.o \
 		BUILD/main_utils.o \
 		BUILD/point.o \
 		BUILD/connectionworker.o \
+		BUILD/databasehandler.o \
 		BUILD/packetprocessor.o \
 		BUILD/tcpclientinstance.o \
 		BUILD/tcpserverinstance.o \
@@ -199,9 +203,11 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		UtilityLibrary.pro src/main/extendedtypes.h \
 		src/main/filedatacompositor.h \
 		src/main/generators.h \
+		src/main/hasher.h \
 		src/main/main_utils.h \
 		src/main/point.h \
 		src/network/connectionworker.h \
+		src/network/databasehandler.h \
 		src/network/exchangepacket.h \
 		src/network/packetprocessor.h \
 		src/network/tcpclientinstance.h \
@@ -224,9 +230,11 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		src/IPC/msgqueue.h src/main/extendedtypes.cpp \
 		src/main/filedatacompositor.cpp \
 		src/main/generators.cpp \
+		src/main/hasher.cpp \
 		src/main/main_utils.cpp \
 		src/main/point.cpp \
 		src/network/connectionworker.cpp \
+		src/network/databasehandler.cpp \
 		src/network/packetprocessor.cpp \
 		src/network/tcpclientinstance.cpp \
 		src/network/tcpserverinstance.cpp \
@@ -474,8 +482,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents src/main/extendedtypes.h src/main/filedatacompositor.h src/main/generators.h src/main/main_utils.h src/main/point.h src/network/connectionworker.h src/network/exchangepacket.h src/network/packetprocessor.h src/network/tcpclientinstance.h src/network/tcpserverinstance.h src/network/threadmanager.h src/network/udpclientinstance.h src/network/udpserverinstance.h src/process/configworker.h src/process/etc.h src/process/processclass.h src/process/processinvoker.h src/process/processobserver.h src/process/stringlist.h src/process/worker.h src/qt_widgets/drawwidget.h src/qt_widgets/figures.h src/qt_widgets/treeitem.h src/qt_widgets/treeitemmodel.h src/encrypt/encryptor.h src/IPC/msgqueue.h $(DISTDIR)/
-	$(COPY_FILE) --parents src/main/extendedtypes.cpp src/main/filedatacompositor.cpp src/main/generators.cpp src/main/main_utils.cpp src/main/point.cpp src/network/connectionworker.cpp src/network/packetprocessor.cpp src/network/tcpclientinstance.cpp src/network/tcpserverinstance.cpp src/network/threadmanager.cpp src/network/udpclientinstance.cpp src/network/udpserverinstance.cpp src/process/configworker.cpp src/process/etc.cpp src/process/processclass.cpp src/process/processinvoker.cpp src/process/processobserver.cpp src/process/worker.cpp src/qt_widgets/drawwidget.cpp src/qt_widgets/figures.cpp src/qt_widgets/treeitem.cpp src/qt_widgets/treeitemmodel.cpp src/encrypt/encryptor.cpp src/IPC/msgqueue.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents src/main/extendedtypes.h src/main/filedatacompositor.h src/main/generators.h src/main/hasher.h src/main/main_utils.h src/main/point.h src/network/connectionworker.h src/network/databasehandler.h src/network/exchangepacket.h src/network/packetprocessor.h src/network/tcpclientinstance.h src/network/tcpserverinstance.h src/network/threadmanager.h src/network/udpclientinstance.h src/network/udpserverinstance.h src/process/configworker.h src/process/etc.h src/process/processclass.h src/process/processinvoker.h src/process/processobserver.h src/process/stringlist.h src/process/worker.h src/qt_widgets/drawwidget.h src/qt_widgets/figures.h src/qt_widgets/treeitem.h src/qt_widgets/treeitemmodel.h src/encrypt/encryptor.h src/IPC/msgqueue.h $(DISTDIR)/
+	$(COPY_FILE) --parents src/main/extendedtypes.cpp src/main/filedatacompositor.cpp src/main/generators.cpp src/main/hasher.cpp src/main/main_utils.cpp src/main/point.cpp src/network/connectionworker.cpp src/network/databasehandler.cpp src/network/packetprocessor.cpp src/network/tcpclientinstance.cpp src/network/tcpserverinstance.cpp src/network/threadmanager.cpp src/network/udpclientinstance.cpp src/network/udpserverinstance.cpp src/process/configworker.cpp src/process/etc.cpp src/process/processclass.cpp src/process/processinvoker.cpp src/process/processobserver.cpp src/process/worker.cpp src/qt_widgets/drawwidget.cpp src/qt_widgets/figures.cpp src/qt_widgets/treeitem.cpp src/qt_widgets/treeitemmodel.cpp src/encrypt/encryptor.cpp src/IPC/msgqueue.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -590,6 +598,9 @@ BUILD/filedatacompositor.o: src/main/filedatacompositor.cpp src/main/filedatacom
 BUILD/generators.o: src/main/generators.cpp src/main/generators.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/generators.o src/main/generators.cpp
 
+BUILD/hasher.o: src/main/hasher.cpp src/main/hasher.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/hasher.o src/main/hasher.cpp
+
 BUILD/main_utils.o: src/main/main_utils.cpp src/main/main_utils.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/main_utils.o src/main/main_utils.cpp
 
@@ -601,6 +612,9 @@ BUILD/connectionworker.o: src/network/connectionworker.cpp src/network/connectio
 		src/network/packetprocessor.h \
 		src/network/exchangepacket.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/connectionworker.o src/network/connectionworker.cpp
+
+BUILD/databasehandler.o: src/network/databasehandler.cpp src/network/databasehandler.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/databasehandler.o src/network/databasehandler.cpp
 
 BUILD/packetprocessor.o: src/network/packetprocessor.cpp src/network/packetprocessor.h \
 		src/network/exchangepacket.h
@@ -637,12 +651,13 @@ BUILD/configworker.o: src/process/configworker.cpp src/process/configworker.h
 BUILD/etc.o: src/process/etc.cpp src/process/etc.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/etc.o src/process/etc.cpp
 
-BUILD/processclass.o: src/process/processclass.cpp src/process/processclass.h
+BUILD/processclass.o: src/process/processclass.cpp src/process/processclass.h \
+		src/process/stringlist.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/processclass.o src/process/processclass.cpp
 
 BUILD/processinvoker.o: src/process/processinvoker.cpp src/process/processinvoker.h \
-		src/process/processclass.h \
-		src/process/stringlist.h
+		src/process/stringlist.h \
+		src/process/processclass.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BUILD/processinvoker.o src/process/processinvoker.cpp
 
 BUILD/processobserver.o: src/process/processobserver.cpp src/process/processobserver.h \
