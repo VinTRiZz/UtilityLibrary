@@ -1,6 +1,7 @@
 #ifndef ENCRYPTOR_H
 #define ENCRYPTOR_H
 
+#include <memory>
 #include <string>
 
 namespace Encryption
@@ -19,17 +20,29 @@ public:
     Encryptor();
     ~Encryptor();
 
-    void init(bool enableBase64 = true, bool generateKeys = false, size_t keySize = 32);
+    void init(ENCRYPTION_METHOD method, bool enableBase64 = true, bool generateKeys = false, size_t keySize = 32);
 
-    /**
-     * @brief setKey Set key for encryption
-     * @param keyString Key or key file name (.pem, etc.)
-     * @param isFileName If true, will try to read key from file by path
-     */
-    void setKey(const std::string & keyString, bool isFileName = false);
-
+    // ----------------------------------------------------------------------- //
+    // --------------------- AES-256 Encrypt methods ------------------------- //
+    // ----------------------------------------------------------------------- //
+    bool setKeyAES(const std::string & keyString); // Key must be 32-byte size (256 bit), returns false if error occured
     bool encryptAES(const std::string & input, std::string & output);
     bool decryptAES(const std::string & input, std::string & output);
+
+    // ----------------------------------------------------------------------- //
+    // ----------------------- RSA Encrypt methods --------------------------- //
+    // ----------------------------------------------------------------------- //
+    std::string pubKeyRSA() const;
+    void setPubKeyRSA(const std::string & pubKey);
+
+    void setKeyPairRSA(const std::string & pubKeyFile, const std::string & privKeyFile);
+    bool createKeyPairRSA(const std::string & pubKeyFile, const std::string & privKeyFile);
+
+    bool encryptRSA(const std::string & input, std::string & output);
+    bool decryptRSA(const std::string & input, std::string & output);
+
+    bool encryptFileRSA(const std::string & inputPath, const std::string & outputPath);
+    bool decryptFileRSA(const std::string & inputPath, const std::string & outputPath);
 
     /**
      * @brief errorText Get string with OpenSSL error text
@@ -37,7 +50,16 @@ public:
      */
     std::string errorText() const;
 
+    /**
+     * @brief encryptMethod Get current class encryption method. To set other method, call @ref init()
+     * @return
+     */
+    ENCRYPTION_METHOD encryptMethod() const;
+
 protected:
+    struct Impl;
+    std::unique_ptr<Impl> d;
+
     std::string base64_encode(const std::string& input);
     std::string base64_decode(const std::string& input);
 
@@ -65,11 +87,9 @@ protected:
 
         size_t keySize;
         std::string encryptionKey;
-        bool keyIsFileName {false};
     };
 
     EncryptorParameters m_config;
-    std::string m_errorText;
 };
 
 }
