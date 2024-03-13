@@ -1,0 +1,30 @@
+#! /bin/bash
+
+BIN_DIRS=(
+$(find . -name BIN)
+)
+
+BUILD_DIRS=(
+$(find . -name BUILD)
+)
+
+SO_FILES=(
+$(find . -name *.so)
+)
+
+echo "REMOVED FILES:"
+
+for removable_dir in ${BIN_DIRS[@]}; do
+echo "$removable_dir"
+rm "$removable_dir" -r
+done
+
+for removable_dir in ${BUILD_DIRS[@]}; do
+echo "$removable_dir"
+rm "$removable_dir" -r
+done
+
+for removable_lib in ${SO_FILES[@]}; do
+echo "$removable_lib"
+rm "$removable_lib"
+done

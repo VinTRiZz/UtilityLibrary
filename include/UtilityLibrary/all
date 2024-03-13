@@ -1,0 +1,23 @@
+#include "main"
+#include "generators"
+#include "types"
+
+#include "hashing"
+#include "encrypt"
+
+#include "point"
+
+#include "process"
+
+#include "network/tcp_server"
+#include "network/tcp_client"
+
+#include "network/udp_server"
+#include "network/udp_client"
+
+#include "network/exchangepacket"
+
+#include "qt_widgets/DrawWidget"
+#include "qt_widgets/TreeItemModel"
+
+#include "IPC/msgqueue"

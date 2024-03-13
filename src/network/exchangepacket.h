@@ -3,10 +3,10 @@
 
 #ifdef QT_CORE_LIB
 #include <QString>
-#include <sstream>
 #include <QDebug>
 #endif // QT_CORE_LIB
 
+#include <sstream>
 #include <openssl/pem.h>
 #include <openssl/bio.h>
 
