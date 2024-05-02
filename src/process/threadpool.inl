@@ -50,7 +50,15 @@ template<typename _T_threadType, typename _T_taskQueueType>
 void TaskHandle<_T_threadType, _T_taskQueueType>::start()
 {
     while (m_queueHandler.hasNext())
-        m_threadHandler.start(m_queueHandler.next());
+    {
+        std::async(
+            [&]()
+            {
+                m_threadHandler.addTask(m_queueHandler.next());
+            }
+        );
+    }
+    m_threadHandler.start();
 }
 
 
@@ -86,7 +94,7 @@ void ThreadPool<_T_threadType, _T_taskQueueType>::setThreadCount(uint newCount)
     for (uint i = 0; i < newCount; i++)
     {
         TaskHandle<_T_threadType, _T_taskQueueType> tHdl;
-        d->taskVect.push_back(tHdl);
+        d->taskVect.emplace_back(tHdl);
     }
 }
 
@@ -112,11 +120,36 @@ void ThreadPool<_T_threadType, _T_taskQueueType>::addTask(const Task &task)
     qDebug() << "Added task to queue" << (int)(minCountHandle - &d->taskVect.front());
 }
 
+
+template<typename _T_threadType, typename _T_taskQueueType>
+void ThreadPool<_T_threadType, _T_taskQueueType>::setupTask(const Task &task)
+{
+    // Find max count of tasks
+    TaskHandle<_T_threadType, _T_taskQueueType>* minCountHandle = &d->taskVect.front();
+
+    for (auto& currentTaskInVect : d->taskVect)
+    {
+        if ( currentTaskInVect.m_threadHandler.taskCount() < minCountHandle->m_threadHandler.taskCount())
+            minCountHandle = &currentTaskInVect;
+    }
+
+    minCountHandle->m_threadHandler.setupTask(task);
+    qDebug() << "Setupped task to queue" << (int)(minCountHandle - &d->taskVect.front());
+}
+
+
 template<typename _T_threadType, typename _T_taskQueueType>
 void ThreadPool<_T_threadType, _T_taskQueueType>::start()
 {
     for (auto& taskHandle : d->taskVect)
         std::async([&](){ return taskHandle.start(); });
+}
+
+template<typename _T_threadType, typename _T_taskQueueType>
+void ThreadPool<_T_threadType, _T_taskQueueType>::setLoadDegree(uint newDegree)
+{
+    for (auto& task : d->taskVect)
+        task.m_threadHandler.setLoadDegree(newDegree);
 }
 
 }

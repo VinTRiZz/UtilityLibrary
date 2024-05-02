@@ -23,6 +23,9 @@ public:
     void setThreadCount(uint newCount);
     uint threadCount() const;
 
+    void setLoadDegree(uint newDegree);
+
+    void setupTask(const Task& task);
     void addTask(const Task& task);
     void start();
 
