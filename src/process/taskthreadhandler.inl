@@ -14,7 +14,6 @@
 #include <QCoreApplication>
 #endif // QT_CORE_LIB
 
-#include <QDebug>
 
 namespace Processes
 {
@@ -53,12 +52,42 @@ private:
 
 
 template<typename _T_threadType>
+TaskThreadHandler<_T_threadType>::TaskThreadHandler(const TaskThreadHandler &thHandler) :
+    TaskThreadHandler()
+{
+    m_taskQueue = thHandler.m_taskQueue;
+}
+
+template<typename _T_threadType>
+TaskThreadHandler<_T_threadType>::~TaskThreadHandler()
+{
+    m_done = true;
+    m_taskAddCV.notify_one();
+}
+
+
+template<typename _T_threadType>
 void TaskThreadHandler<_T_threadType>::addTask(const Task& task)
 {
     std::unique_lock<std::mutex> lock(m_taskMx);
     m_taskQueue.push(task);
     m_taskAddCV.notify_one();
 }
+
+
+template<typename _T_threadType>
+void TaskThreadHandler<_T_threadType>::setupTask(const Task &task)
+{
+    m_taskQueue.push(task);
+}
+
+
+template<typename _T_threadType>
+void TaskThreadHandler<_T_threadType>::poll()
+{
+    m_thread.reset();
+}
+
 
 template<typename _T_threadType>
 uint TaskThreadHandler<_T_threadType>::taskCount() const
@@ -101,6 +130,14 @@ void TaskThreadHandler<_T_threadType>::waitForTask()
     m_taskAddCV.wait(lock, [&](){ return (m_taskQueue.size() || m_done); });
 }
 
+
+template<typename _T_threadType>
+void TaskThreadHandler<_T_threadType>::start()
+{
+    m_taskAddCV.notify_one();
+}
+
+
 template<typename _T_threadType>
 void TaskThreadHandler<_T_threadType>::setLoadDegree(uint newDegree)
 {
@@ -141,24 +178,11 @@ TaskThreadHandler<QThread>::TaskThreadHandler()
     );
 }
 
-template<typename _T_threadType>
-TaskThreadHandler<_T_threadType>::TaskThreadHandler(const TaskThreadHandler &thHandler) :
-    TaskThreadHandler()
-{
-    m_taskQueue = thHandler.m_taskQueue;
-}
 
-template<typename _T_threadType>
-TaskThreadHandler<_T_threadType>::~TaskThreadHandler()
+template<>
+void TaskThreadHandler<QThread>::start()
 {
-    m_done = true;
-    m_taskAddCV.notify_one();
-}
-
-
-template<typename _T_threadType>
-void TaskThreadHandler<_T_threadType>::start()
-{
+    m_thread->start();
     m_taskAddCV.notify_one();
 }
 
@@ -179,18 +203,6 @@ void TaskThreadHandler<_T_threadType>::start()
 //        }
 //);
 //}
-
-template<typename _T_threadType>
-void TaskThreadHandler<_T_threadType>::poll()
-{
-    m_thread.reset();
-}
-
-template<typename _T_threadType>
-void TaskThreadHandler<_T_threadType>::setupTask(const Task &task)
-{
-    m_taskQueue.push(task);
-}
 
 }
 

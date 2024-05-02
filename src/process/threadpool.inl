@@ -67,7 +67,7 @@ void TaskHandle<_T_threadType, _T_taskQueueType>::start()
 template<typename _T_threadType, typename _T_taskQueueType>
 struct ThreadPool<_T_threadType, _T_taskQueueType>::ThreadPoolPrivate
 {
-    uint maxThreadCount {0};
+    uint maxThreadCount {1};
     std::vector<TaskHandle<_T_threadType, _T_taskQueueType>> taskVect;
 };
 
