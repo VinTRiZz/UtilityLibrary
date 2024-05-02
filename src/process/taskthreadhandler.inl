@@ -74,14 +74,20 @@ void TaskThreadHandler<_T_threadType>::taskAddCycle()
     while (!m_done)
     {
         uint currentSize = m_taskQueue.size();
-        for (uint cnt = 0; (cnt < m_loadDegree) && (cnt < currentSize); cnt++)
+        for (uint currentTaskChapter = 0; currentTaskChapter < (currentSize / m_loadDegree + 1); currentTaskChapter++)
         {
-            std::unique_lock<std::mutex> lock(m_taskMx);
-            tasks.push_back(std::async(m_taskQueue.front()));
-            m_taskQueue.pop();
-            qDebug() << QString("Started task %1 of %2. Load: %3").arg(QString::number(cnt), QString::number(currentSize), QString::number(m_loadDegree));
+            for (uint cnt = 0; cnt < m_loadDegree; cnt++)
+            {
+                if (!m_taskQueue.size())
+                    break;
+
+                std::unique_lock<std::mutex> lock(m_taskMx);
+                tasks.push_back(std::async(m_taskQueue.front()));
+                m_taskQueue.pop();
+//                qDebug() << QString("Started task %1 of %2. Load: %3").arg(QString::number(cnt), QString::number(currentSize), QString::number(m_loadDegree));
+            }
+            tasks.clear();
         }
-        tasks.clear();
 
         waitForTask();
     }

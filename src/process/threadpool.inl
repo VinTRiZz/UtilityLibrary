@@ -117,7 +117,7 @@ void ThreadPool<_T_threadType, _T_taskQueueType>::addTask(const Task &task)
     }
 
     minCountHandle->m_queueHandler.addTask(task);
-    qDebug() << "Added task to queue" << (int)(minCountHandle - &d->taskVect.front());
+    minCountHandle->m_threadHandler.addTask(task);
 }
 
 
@@ -134,7 +134,6 @@ void ThreadPool<_T_threadType, _T_taskQueueType>::setupTask(const Task &task)
     }
 
     minCountHandle->m_threadHandler.setupTask(task);
-    qDebug() << "Setupped task to queue" << (int)(minCountHandle - &d->taskVect.front());
 }
 
 
