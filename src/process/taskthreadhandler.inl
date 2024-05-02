@@ -5,8 +5,10 @@
 #include <thread>
 #include <pthread.h>
 
+#ifdef QT_CORE_LIB
 #include <QThread>
 #include <QCoreApplication>
+#endif // QT_CORE_LIB
 
 namespace Processes
 {
@@ -27,7 +29,7 @@ private:
 template<typename _T_threadType>
 void TaskThreadHandler<_T_threadType>::start(const Task &task)
 {
-    throw std::runtime_error(std::string("THREAD POOL: Invalid thread type: ") + typeid(_T_threadType).name());
+    task(); // Call just in this thread
 }
 
 
@@ -45,7 +47,7 @@ void TaskThreadHandler<std::thread>::start(const Task& task)
     );
 }
 
-
+#ifdef QT_CORE_LIB
 template<>
 void TaskThreadHandler<QThread>::start(const Task& task)
 {
@@ -63,23 +65,24 @@ void TaskThreadHandler<QThread>::start(const Task& task)
         }
     );
 }
+#endif // QT_CORE_LIB
 
 
-template<>
-void TaskThreadHandler<pthread_t>::start(const Task& task)
-{
-    m_thread = std::shared_ptr<pthread_t>(
-        new pthread_t(),
-        [](pthread_t* pThread)
-        {
-            char __thread_return[128];
-            timespec _abstime;
-            _abstime.tv_sec = 5;
-            pthread_timedjoin_np(*pThread, reinterpret_cast<void**>(&__thread_return), &_abstime);
-            delete pThread;
-        }
-);
-}
+//template<>
+//void TaskThreadHandler<pthread_t>::start(const Task& task)
+//{
+//    m_thread = std::shared_ptr<pthread_t>(
+//        new pthread_t(),
+//        [](pthread_t* pThread)
+//        {
+//            char __thread_return[128];
+//            timespec _abstime;
+//            _abstime.tv_sec = 5;
+//            pthread_timedjoin_np(*pThread, reinterpret_cast<void**>(&__thread_return), &_abstime);
+//            delete pThread;
+//        }
+//);
+//}
 
 template<typename _T_threadType>
 void TaskThreadHandler<_T_threadType>::poll()

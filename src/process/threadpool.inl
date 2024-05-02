@@ -2,21 +2,22 @@
 
 #ifdef QT_CORE_LIB
 #include <QDebug>
+#include <QThread>
+#include <QCoreApplication>
 #else
 #include <iostream>
 #endif // QT_CORE_LIB
 
+// Types
 #include <queue>
+#include <vector>
 
+// Thread working
 #include <future>
 #include <thread>
 #include <pthread.h>
 
-#include <type_traits>
-
-#include <QThread>
-#include <QCoreApplication>
-
+// Components
 #include "taskthreadhandler.inl"
 #include "taskqueuehandler.inl"
 
@@ -34,34 +35,6 @@ void log(const T& what)
 }
 
 
-QString generateUid(int uidLength)
-{
-    QString result;
-    char symbol;
-    int currentSymbolType;
-
-    for (int i = 0; i < uidLength; i++)
-    {
-        currentSymbolType = std::rand() % 3;
-
-        switch (currentSymbolType)
-        {
-        case 0:
-            symbol = std::rand() % 26 + 'a'; // Only small
-            break;
-
-        case 1:
-            symbol = std::rand() % 26 + 'A'; // Only small
-            break;
-
-        default:
-            symbol = std::rand() % 9 + '0'; // Only number
-            break;
-        }
-        result += symbol;
-    }
-    return result;
-}
 
 
 template <typename _T_threadType, typename _T_taskQueueType>
@@ -77,10 +50,7 @@ template<typename _T_threadType, typename _T_taskQueueType>
 void TaskHandle<_T_threadType, _T_taskQueueType>::start()
 {
     while (m_queueHandler.hasNext())
-    {
-        qDebug() << "Started task";
         m_threadHandler.start(m_queueHandler.next());
-    }
 }
 
 
@@ -118,7 +88,6 @@ void ThreadPool<_T_threadType, _T_taskQueueType>::setThreadCount(uint newCount)
         TaskHandle<_T_threadType, _T_taskQueueType> tHdl;
         d->taskVect.push_back(tHdl);
     }
-    qDebug() << "Now task vect has size" << d->taskVect.size();
 }
 
 template<typename _T_threadType, typename _T_taskQueueType>
@@ -147,9 +116,7 @@ template<typename _T_threadType, typename _T_taskQueueType>
 void ThreadPool<_T_threadType, _T_taskQueueType>::start()
 {
     for (auto& taskHandle : d->taskVect)
-    {
         std::async([&](){ return taskHandle.start(); });
-    }
 }
 
 }

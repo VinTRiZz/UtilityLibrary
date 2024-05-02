@@ -3,15 +3,14 @@
 
 #include <functional>
 
-#include <QVector>
-#include <QQueue>
-
 #include <vector>
 #include <queue>
 
+#ifdef QT_CORE_LIB
+#include <QVector>
+#include <QQueue>
 #include <QString>
-
-#include <type_traits>
+#endif // QT_CORE_LIB
 
 namespace Processes
 {
@@ -73,13 +72,18 @@ uint TaskQueueHandler<_T_taskQueueType>::count() const
 template<>
 Task TaskQueueHandler<std::queue<Task>>::at(uint64_t pos) const
 {
+#ifdef QT_CORE_LIB
+    Q_UNUSED(pos)
+#endif // QT_CORE_LIB
     throw std::runtime_error("No method \"at(uint pos)\" defined for std::queue");
 }
 
 
+#ifdef QT_CORE_LIB
 template<>
 Task TaskQueueHandler<QQueue<Task>>::at(uint64_t pos) const
 {
+    Q_UNUSED(pos)
     throw std::runtime_error("No method \"at(uint pos)\" defined for QQueue");
 }
 
@@ -89,6 +93,7 @@ Task TaskQueueHandler<QVector<Task>>::at(uint64_t pos) const
 {
     return m_taskQueue.at(pos);
 }
+#endif // QT_CORE_LIB
 
 
 template<>
@@ -128,8 +133,6 @@ Task &TaskQueueHandler<_T_taskQueueType>::current()
 {
     return m_taskQueue.front();
 }
-
-//std::enable_if<std::is_same<_T_taskQueueType::container_type, std::queue<int>::container_type>(), bool>
 
 }
 

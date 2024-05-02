@@ -4,9 +4,9 @@
 #include <memory>
 #include <functional>
 
-#include <type_traits>
-
+#ifdef QT_CORE_LIB
 #include <QString>
+#endif // QT_CORE_LIB
 
 namespace Processes
 {
