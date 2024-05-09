@@ -4,7 +4,7 @@
 
 #include <QDebug>
 
-using namespace ProcessWatcher;
+using namespace Processes;
 
 struct ConfigWorker::Impl
 {
@@ -32,7 +32,7 @@ struct ConfigWorker::Impl
 
             anotherConfig.processName = process;
             anotherConfig.processArgs = m_configFile->value("processArgs").toStringList();
-            anotherConfig.behaviour = ProcessWatcher::ProcessExitBehaviour(m_configFile->value("behaviour").toInt());
+            anotherConfig.behaviour = Processes::ProcessExitBehaviour(m_configFile->value("behaviour").toInt());
 
             // Decode from base64 (tested)
             anotherConfig.processName = QByteArray::fromBase64(anotherConfig.processName.toUtf8());
@@ -58,7 +58,7 @@ struct ConfigWorker::Impl
 
         m_configFile->beginGroup("Processes");
 
-        for (ProcessWatcher::WorkerConfig & config : m_configs)
+        for (Processes::WorkerConfig & config : m_configs)
         {
             // Encode to base64 (tested)
             config.processName = config.processName.toUtf8().toBase64();

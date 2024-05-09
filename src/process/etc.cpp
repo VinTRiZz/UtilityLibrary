@@ -7,7 +7,7 @@
 #endif // QT_CORE_LIB
 
 
-void Utility::pollThread(std::thread *pThread)
+void Processes::pollThread(std::thread *pThread)
 {
     if (!pThread)
         return;
@@ -18,7 +18,7 @@ void Utility::pollThread(std::thread *pThread)
     delete pThread;
 }
 
-bool Utility::invoke(const std::string program, const std::string args, std::string *output)
+bool Processes::invoke(const std::string program, const std::string args, std::string *output)
 {
     // TODO: Write-up
 #ifdef QT_CORE_LIB
@@ -30,7 +30,7 @@ bool Utility::invoke(const std::string program, const std::string args, std::str
 }
 
 #ifdef QT_CORE_LIB
-bool Utility::pollThreadQ(QThread *pThread, uint TIMEOUT)
+bool Processes::pollThreadQ(QThread *pThread, uint TIMEOUT)
 {
     if (!pThread)
         return false;
@@ -49,7 +49,7 @@ bool Utility::pollThreadQ(QThread *pThread, uint TIMEOUT)
     return result;
 }
 
-bool Utility::invokeQ(const QString &program, const QStringList &args, const int timeout, QString * output, QString * errorOutput)
+bool Processes::invokeQ(const QString &program, const QStringList &args, const int timeout, QString * output, QString * errorOutput)
 {
     QProcess invokingProcess;
 

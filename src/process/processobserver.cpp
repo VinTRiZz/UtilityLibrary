@@ -5,7 +5,7 @@
 
 #include <QDebug>
 
-using namespace ProcessWatcher;
+using namespace Processes;
 
 struct ProcessObserver::Impl
 {
@@ -33,7 +33,7 @@ struct ProcessObserver::Impl
 
         if (pProc->getStatus() == ProcessStatus::ERROR)
         {
-            qDebug() << "Error starting process: " << config.processName << endl;
+            qDebug() << "Error starting process: " << config.processName << Qt::endl;
         }
 
         return (m_workers.size() - 1);
@@ -41,7 +41,7 @@ struct ProcessObserver::Impl
 
     void stopAll()
     {
-        for (ProcessWatcher::Worker * pWorker : m_workers)
+        for (Processes::Worker * pWorker : m_workers)
         {
             pWorker->deleteLater();
         }

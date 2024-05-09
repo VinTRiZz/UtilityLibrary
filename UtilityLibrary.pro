@@ -6,7 +6,6 @@ TEMPLATE = lib
 TARGET = UtilityLibrary
 
 LIBS += -lcrypto
-LIBS += -lsqlite3
 
 include(src/src.pri)
 include(build.pri)

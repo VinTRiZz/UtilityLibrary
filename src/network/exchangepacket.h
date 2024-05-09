@@ -10,7 +10,7 @@
 #include <openssl/pem.h>
 #include <openssl/bio.h>
 
-#include <msgpack.hpp>
+//#include <msgpack.hpp>
 
 namespace Exchange
 {
@@ -62,7 +62,7 @@ inline std::string base64_decode(const std::string& input)
     BIO_free_all(bio);
     std::string result(pBuffer, l);
     delete[] pBuffer;
-    return std::move(result);
+    return result;
 }
 
 class PacketConverter
@@ -74,7 +74,7 @@ public:
             std::stringstream buffer;
             msgpack::pack(buffer, data_p);
             QByteArray result = base64_encode(buffer.str()).c_str();
-            return std::move(result);
+            return result;
         }
         catch (std::exception& ex) {
             return QByteArray();
@@ -96,7 +96,7 @@ public:
             obj.convert(result);
 
             result.isValid = true; // Shows that conversion complete with success
-            return std::move(result);
+            return result;
         }
         catch (std::exception& ex) {
             return Packet();

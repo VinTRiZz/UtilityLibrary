@@ -3,10 +3,9 @@
 
 #include <memory>
 #include <QVector>
+#include <QStringList>
 
-#warning "Need refactor"
-
-namespace ProcessWatcher
+namespace Processes
 {
 
 /**

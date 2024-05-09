@@ -1,8 +1,6 @@
 #ifndef MSGQUEUE_H
 #define MSGQUEUE_H
 
-#warning "Need refactor"
-
 #ifdef REWRITE_THIS_SHIT
 
 #define MAX_MESSAGE_SIZE 256

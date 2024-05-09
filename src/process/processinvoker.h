@@ -1,11 +1,9 @@
 #ifndef PROCESSINVOKER_HPP
 #define PROCESSINVOKER_HPP
 
-#warning "Need refactor"
-
 #include "stringlist.h"
 
-namespace ProcessWorking
+namespace Processes
 {
 
 class ProcessInvoker

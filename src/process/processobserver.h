@@ -6,9 +6,7 @@
 #include "configworker.h"
 #include "worker.h"
 
-#warning "Need refactor"
-
-namespace ProcessWatcher
+namespace Processes
 {
 
 class ProcessObserver

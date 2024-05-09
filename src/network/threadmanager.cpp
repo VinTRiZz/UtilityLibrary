@@ -73,9 +73,9 @@ void Utility::Network::ThreadManager::createConnection(qintptr handler)
     }
 
     // Setup ID of worker
-    unsigned long workerId = qrand() * qrand();
+    unsigned long workerId = std::rand() * std::rand();
     while (m_workers.find(workerId) != m_workers.end())
-        workerId = qrand() * qrand();
+        workerId = std::rand() * std::rand();
 
     // Setup worker and thread for it
     QThread * pWorkerThread = new QThread(this);

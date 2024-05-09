@@ -6,8 +6,6 @@
 
 #include "exchangepacket.h"
 
-#warning "Взять проект из дома, этот ужасный с точки зрения реализации"
-
 namespace Utility {
 namespace Network {
 

@@ -8,9 +8,7 @@
 
 #include "configworker.h"
 
-#warning "Need refactor"
-
-namespace ProcessWatcher
+namespace Processes
 {
 
 /**

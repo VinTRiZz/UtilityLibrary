@@ -21,7 +21,7 @@
 
 #define PROCESS_TIMEOUT_MS 1000
 
-using namespace ProcessWatcher;
+using namespace Processes;
 
 struct Worker::Impl
 {

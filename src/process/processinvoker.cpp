@@ -4,10 +4,10 @@
 
 #include <signal.h> // For kill directive
 
-using namespace ProcessWorking;
+using namespace Processes;
 
 
-int ProcessWorking::ProcessInvoker::invoke(const std::string & program, const int timeout)
+int Processes::ProcessInvoker::invoke(const std::string & program, const int timeout)
 {
     Process process;
     process.setProgram(program);
@@ -32,7 +32,7 @@ int ProcessWorking::ProcessInvoker::invoke(const std::string & program, const in
 }
 
 
-int ProcessWorking::ProcessInvoker::invoke(const std::string & program, const std::string & argument, const int timeout)
+int Processes::ProcessInvoker::invoke(const std::string & program, const std::string & argument, const int timeout)
 {
     StringList args;
     args << argument;
@@ -40,7 +40,7 @@ int ProcessWorking::ProcessInvoker::invoke(const std::string & program, const st
 }
 
 
-int ProcessWorking::ProcessInvoker::invoke(const std::string & program, const StringList & arguments, const int timeout)
+int Processes::ProcessInvoker::invoke(const std::string & program, const StringList & arguments, const int timeout)
 {
     Process process;
     process.setProgram(program);
@@ -67,7 +67,7 @@ int ProcessWorking::ProcessInvoker::invoke(const std::string & program, const St
 
 
 
-int ProcessWorking::ProcessInvoker::invoke(const std::string & program, const StringList & arguments, std::string & programOutput, const int timeout)
+int Processes::ProcessInvoker::invoke(const std::string & program, const StringList & arguments, std::string & programOutput, const int timeout)
 {
     Process process;
     process.setProgram(program);

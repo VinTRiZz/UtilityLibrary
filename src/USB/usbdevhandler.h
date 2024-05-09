@@ -1,8 +1,6 @@
 #ifndef USBDEVHANDLER_H
 #define USBDEVHANDLER_H
 
-#warning "Need rewrite"
-
 /*
 Typical port names:
 

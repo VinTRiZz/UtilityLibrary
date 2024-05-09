@@ -28,3 +28,6 @@ for removable_lib in ${SO_FILES[@]}; do
 echo "$removable_lib"
 rm "$removable_lib"
 done
+
+rm .qmake.stash
+rm Makefile

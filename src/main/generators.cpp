@@ -20,13 +20,13 @@ std::string Utility::Generators::generateText(int countMin, int countMax, const 
     if (countMin == countMax)
         countMax++;
 
-    const int wordCount = (qrand() % (countMax - countMin) + countMin);
+    const int wordCount = (std::rand() % (countMax - countMin) + countMin);
 
     bool isSentenceStart = true;
 
     for (int i = 0; i < wordCount; i++)
     {
-        bufferWordString = initWords[ qrand() % initWordsSize ];
+        bufferWordString = initWords[ std::rand() % initWordsSize ];
 
         if (isSentenceStart)
         {
@@ -34,9 +34,9 @@ std::string Utility::Generators::generateText(int countMin, int countMax, const 
             isSentenceStart = false;
         }
 
-        if (qrand() % 2)
+        if (std::rand() % 2)
         {
-            switch (qrand() % 4)
+            switch (std::rand() % 4)
             {
             case 0:
                 bufferWordString += '.';
@@ -79,25 +79,25 @@ std::string Utility::Generators::generateString(int sizeMin, int sizeMax, bool h
     if (sizeMin == sizeMax)
         sizeMax++;
 
-    for (int i = 0; i < (qrand() % (sizeMax - sizeMin) + sizeMin); i++)
+    for (int i = 0; i < (std::rand() % (sizeMax - sizeMin) + sizeMin); i++)
     {
         if (hasSpaces)
-            currentSymbolType = qrand() % 4;
+            currentSymbolType = std::rand() % 4;
         else
-            currentSymbolType = qrand() % 3;
+            currentSymbolType = std::rand() % 3;
 
         switch (currentSymbolType)
         {
         case 0:
-            symbol = qrand() % 26 + 'a'; // Only small
+            symbol = std::rand() % 26 + 'a'; // Only small
             break;
 
         case 1:
-            symbol = qrand() % 26 + 'A'; // Only small
+            symbol = std::rand() % 26 + 'A'; // Only small
             break;
 
         case 2:
-            symbol = qrand() % 9 + '0'; // Only number
+            symbol = std::rand() % 9 + '0'; // Only number
             break;
 
         case 3:
@@ -117,11 +117,11 @@ std::string Utility::Generators::generateAboba(int countMin, int countMax)
     if (countMin == countMax)
         countMax++;
 
-    for (int i = 0; i < (qrand() % (countMax - countMin) + countMin); i++)
+    for (int i = 0; i < (std::rand() % (countMax - countMin) + countMin); i++)
     {
         for (auto & s : abobaString)
         {
-            if (qrand() % 2)
+            if (std::rand() % 2)
                 s = std::tolower(s);
             else
                 s = std::toupper(s);
@@ -141,9 +141,9 @@ std::vector<std::string> Utility::Generators::generateDepends(std::vector<std::s
     if (!targetCount)
         targetCount++;
 
-    for (int j = 1; j < (qrand() % randomInterval); j++)
+    for (int j = 1; j < (std::rand() % randomInterval); j++)
     {
-        dependBuffer = dependTargets[qrand() % targetCount];
+        dependBuffer = dependTargets[std::rand() % targetCount];
         if (dependBuffer != target)
         {
             dependFrom.push_back(dependBuffer);
@@ -156,7 +156,7 @@ std::vector<std::string> Utility::Generators::generateDepends(std::vector<std::s
 std::string Utility::Generators::generatePath(bool withSpaces)
 {
     std::string result = "/";
-    for (int i = 0; i < qrand() % 15; i++)
+    for (int i = 0; i < std::rand() % 15; i++)
         result += generateString(2, 20, withSpaces) + "/";
     return result;
 }
@@ -174,13 +174,13 @@ QString Utility::Generators::generateTextQ(int countMin, int countMax, const std
     if (countMin == countMax)
         countMax++;
 
-    const int wordCount = (qrand() % (countMax - countMin) + countMin);
+    const int wordCount = (std::rand() % (countMax - countMin) + countMin);
 
     bool isSentenceStart = true;
 
     for (int i = 0; i < wordCount; i++)
     {
-        bufferWordString = initWords[ qrand() % initWordsSize ];
+        bufferWordString = initWords[ std::rand() % initWordsSize ];
 
         if (isSentenceStart)
         {
@@ -188,9 +188,9 @@ QString Utility::Generators::generateTextQ(int countMin, int countMax, const std
             isSentenceStart = false;
         }
 
-        if (qrand() % 2)
+        if (std::rand() % 2)
         {
-            switch (qrand() % 4)
+            switch (std::rand() % 4)
             {
             case 0:
                 bufferWordString += '.';
@@ -233,25 +233,25 @@ QString Utility::Generators::generateStringQ(int sizeMin, int sizeMax, bool hasS
     if (sizeMin == sizeMax)
         sizeMax++;
 
-    for (int i = 0; i < (qrand() % (sizeMax - sizeMin) + sizeMin); i++)
+    for (int i = 0; i < (std::rand() % (sizeMax - sizeMin) + sizeMin); i++)
     {
         if (hasSpaces)
-            currentSymbolType = qrand() % 4;
+            currentSymbolType = std::rand() % 4;
         else
-            currentSymbolType = qrand() % 3;
+            currentSymbolType = std::rand() % 3;
 
         switch (currentSymbolType)
         {
         case 0:
-            symbol = qrand() % 26 + 'a'; // Only small
+            symbol = std::rand() % 26 + 'a'; // Only small
             break;
 
         case 1:
-            symbol = qrand() % 26 + 'A'; // Only small
+            symbol = std::rand() % 26 + 'A'; // Only small
             break;
 
         case 2:
-            symbol = qrand() % 9 + '0'; // Only number
+            symbol = std::rand() % 9 + '0'; // Only number
             break;
 
         case 3:
@@ -271,11 +271,11 @@ QString Utility::Generators::generateAbobaQ(int countMin, int countMax)
     if (countMin == countMax)
         countMax++;
 
-    for (int i = 0; i < (qrand() % (countMax - countMin) + countMin); i++)
+    for (int i = 0; i < (std::rand() % (countMax - countMin) + countMin); i++)
     {
         for (auto & s : abobaString)
         {
-            if (qrand() % 2)
+            if (std::rand() % 2)
                 s = std::tolower(s);
             else
                 s = std::toupper(s);
@@ -296,9 +296,9 @@ QVector<QString> Utility::Generators::generateDependsQ(QVector<QString> &dependT
     if (!targetCount)
         targetCount++;
 
-    for (int j = 1; j < (qrand() % randomInterval); j++)
+    for (int j = 1; j < (std::rand() % randomInterval); j++)
     {
-        dependBuffer = dependTargets[qrand() % targetCount];
+        dependBuffer = dependTargets[std::rand() % targetCount];
         if (dependBuffer != target)
             dependFrom.push_back(dependBuffer);
     }
@@ -309,7 +309,7 @@ QVector<QString> Utility::Generators::generateDependsQ(QVector<QString> &dependT
 QString Utility::Generators::generatePathQ(bool withSpaces)
 {
     QString result = "/";
-    for (int i = 0; i < qrand() % 15; i++)
+    for (int i = 0; i < std::rand() % 15; i++)
     {
         result += generateStringQ(2, 20, withSpaces) + "/";
     }

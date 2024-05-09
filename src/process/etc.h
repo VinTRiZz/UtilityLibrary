@@ -9,7 +9,7 @@
 #include <QThread>
 #endif // QT_CORE_LIB
 
-namespace Utility
+namespace Processes
 {
 
 // Defines time before invoke function stops

@@ -1,14 +1,12 @@
 #ifndef PROCESSCLASS_HPP
 #define PROCESSCLASS_HPP
 
-#warning "Need refactor"
-
 #include <string>
 #include <memory>
 
 #include "stringlist.h"
 
-namespace ProcessWorking
+namespace Processes
 {
 
 class Process

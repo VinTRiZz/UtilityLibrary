@@ -6,7 +6,7 @@
 
 #include <thread> // Awaiting thread
 
-using namespace ProcessWorking;
+using namespace Processes;
 
 struct Process::Impl
 {
