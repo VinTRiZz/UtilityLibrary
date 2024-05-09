@@ -9,7 +9,7 @@ SOURCES +=  src/main/*.cpp \
 HEADERS +=  src/main/*.h \
             src/network/*.h \
             src/process/*.h \
-            src/process/*.inl \
+            src/process/ThreadPoolImplement/*.inl \
             src/qt_widgets/*.h \
             src/encrypt/*.h \
             src/IPC/*.h \

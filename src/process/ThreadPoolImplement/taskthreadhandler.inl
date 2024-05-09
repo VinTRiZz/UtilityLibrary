@@ -12,6 +12,7 @@
 #ifdef QT_CORE_LIB
 #include <QThread>
 #include <QCoreApplication>
+#include <QDebug>
 #endif // QT_CORE_LIB
 
 
@@ -188,21 +189,25 @@ void TaskThreadHandler<QThread>::start()
 
 
 
-//template<>
-//void TaskThreadHandler<pthread_t>::start(const Task& task)
-//{
-//    m_thread = std::shared_ptr<pthread_t>(
-//        new pthread_t(),
-//        [](pthread_t* pThread)
-//        {
-//            char __thread_return[128];
-//            timespec _abstime;
-//            _abstime.tv_sec = 5;
-//            pthread_timedjoin_np(*pThread, reinterpret_cast<void**>(&__thread_return), &_abstime);
-//            delete pThread;
-//        }
-//);
-//}
+template<>
+void TaskThreadHandler<pthread_t>::start()
+{
+    m_thread = std::shared_ptr<pthread_t>(
+        new pthread_t(),
+        [](pthread_t* pThread)
+        {
+            char __thread_return[128];
+            timespec _abstime;
+            _abstime.tv_sec = 5;
+            pthread_timedjoin_np(*pThread, reinterpret_cast<void**>(&__thread_return), &_abstime);
+            delete pThread;
+        }
+    );
+
+    int createResult = pthread_create(m_thread.get(), nullptr, &this->taskAddCycle, nullptr);
+    if (createResult)
+        qDebug() << "Shit is coming!";
+}
 
 }
 
