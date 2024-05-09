@@ -10,7 +10,7 @@
 #include <openssl/pem.h>
 #include <openssl/bio.h>
 
-//#include <msgpack.hpp>
+#include <msgpack.hpp>
 
 namespace Exchange
 {

@@ -4,10 +4,16 @@
 #include <memory>
 #include <functional>
 
+#include <type_traits>
+
+#include <QString>
+
 namespace Processes
 {
 
-template <typename _T_taskQueueType, typename _T_threadType>
+typedef std::function<void()> Task;
+
+template <typename _T_threadType, typename _T_taskQueueType>
 class ThreadPool
 {
 public:
@@ -17,7 +23,8 @@ public:
     void setThreadCount(uint newCount);
     uint threadCount() const;
 
-    void addTask(const std::function<void()>& task);
+    void addTask(const Task& task);
+    void start();
 
 private:
     struct ThreadPoolPrivate;

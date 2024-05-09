@@ -202,11 +202,7 @@ Encryption::Encryptor::Encryptor() :
 
 Encryption::Encryptor::~Encryptor()
 {
-    // TODO: Free RSA keys, etc
-    if (d->rsa_key)
-        d->rsa_free_keypair();
-
-    OPENSSL_cleanup();
+    if (d->rsa_key) d->rsa_free_keypair();
 }
 
 void Encryption::Encryptor::init(ENCRYPTION_METHOD method, bool enableBase64, bool generateKeys, size_t keySize)

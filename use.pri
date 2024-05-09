@@ -1,4 +1,4 @@
-INCLUDEPATH += $$PWD/include
+INCLUDEPATH += $$PWD/lib_include
 
 LIBS += -L$$PWD/BIN -lUtilityLibrary
 

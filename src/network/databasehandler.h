@@ -5,8 +5,6 @@
 #include <vector>
 #include <memory>
 
-#warning "No SQLite detected on work pc"
-
 namespace Utility {
 namespace Network {
 
