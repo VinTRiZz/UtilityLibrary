@@ -4,7 +4,8 @@ SOURCES +=  src/main/*.cpp \
             src/qt_widgets/*.cpp \
             src/encrypt/*.cpp \
             src/IPC/*.cpp \
-            src/USB/*.cpp
+            src/USB/*.cpp \
+            src/AppCore/*.cpp
 
 HEADERS +=  src/main/*.h \
             src/network/*.h \
@@ -13,4 +14,5 @@ HEADERS +=  src/main/*.h \
             src/qt_widgets/*.h \
             src/encrypt/*.h \
             src/IPC/*.h \
-            src/USB/*.h
+            src/USB/*.h \
+            src/AppCore/*.hpp
