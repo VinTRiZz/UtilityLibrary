@@ -128,7 +128,8 @@ void log(Args... args)
     currentTime.erase(currentTime.length() - 1);            // Erase garbage
 
     std::cout << currentTime << " [" << logTypeTextColored << "] ";
-    (std::cout << ... << args) << std::endl;
+    ((std::cout << args << ' '), ...);
+    std::cout << std::endl;
 
     // Setup log type
     constexpr const char* logTypeText = setupLogTypeText<LogType>();
@@ -136,7 +137,8 @@ void log(Args... args)
     if (!logfile.is_open())
         throw std::runtime_error(std::string("Can not open log file. Error description: ") + strerror(errno));
     logfile << currentTime << " [" << logTypeText << "] ";
-    (logfile << ... << args) << std::endl;
+    ((logfile << args << ' '), ...);
+    logfile << std::endl;
 }
 
 // Main logging
